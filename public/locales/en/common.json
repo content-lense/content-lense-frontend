@@ -1,0 +1,18 @@
+{
+    "menu": {
+      "entities": {
+        "articles": "Articles",
+        "institutions": "Institutions",
+        "persons": "Persons"
+      },
+      "settings": "Settings",
+      "logout": "Logout",
+      "dashboard": "Dashboard",
+      "group": {
+        "default": "Home",
+        "entities": "Entities",
+        "settings": "Settings"
+      }
+    }
+  }
+  
