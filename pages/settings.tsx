@@ -15,6 +15,7 @@ import { useState } from "react";
 import AnalysisMicroserviceList from "../components/AnalysisMicroserviceList/AnalysisMicroserviceList";
 import WebhookList from "../components/WebhookList/WebhookList";
 import { Add } from "@mui/icons-material";
+import ArticleSourceList from "../components/ArticleSource/ArticleSourceList";
 
 function makeid(length = 32) {
   var result = "";
@@ -89,6 +90,7 @@ const Settings: NextPage = () => {
           </Stack>
           
         </Stack>
+
         <Stack flexDirection="column" alignItems={"flex-start"}>
             <Stack direction="row" justifyContent={"space-between"} alignSelf={"stretch"}>
               <Typography variant="h5">Analysis Microservices</Typography>
@@ -105,6 +107,14 @@ const Settings: NextPage = () => {
             <Button startIcon={<Add/>} variant="contained">Add</Button>
           </Stack>
           <WebhookList />
+        </Stack>
+
+        <Stack flexDirection="column">
+          <Stack direction="row" justifyContent={"space-between"} alignSelf={"stretch"}>
+            <Typography variant="h5">Article Sources</Typography>
+            <Button startIcon={<Add/>} variant="contained">Add</Button>
+          </Stack>
+          <ArticleSourceList />
         </Stack>
 
         
