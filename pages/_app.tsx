@@ -16,7 +16,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DefaultQueryFn } from "../data/ReactQueries";
 
 type NextPageWithLayout = NextPage & {
-  getLayout?: (page: any ) => any;
+  getLayout?: (page: any) => any;
 };
 
 type AppPropsWithLayout = AppProps & {
@@ -28,9 +28,9 @@ const queryClient = new QueryClient({
     queries: {
       // @ts-ignore
       queryFn: DefaultQueryFn,
-    }
-  }
-})
+    },
+  },
+});
 
 export const theme = createTheme({
   palette: {
@@ -55,7 +55,13 @@ export const theme = createTheme({
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const router = useRouter();
-  const { user, isAuthenticated, isLoading: isLoadingUser, setUser, refetch } = useUser();
+  const {
+    user,
+    isAuthenticated,
+    isLoading: isLoadingUser,
+    setUser,
+    refetch,
+  } = useUser();
 
   function forceContextUserRefetch() {
     refetch();
@@ -70,12 +76,10 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   if (isLoadingUser) return <LoadingScreen />;
 
-
-
   return (
     <CssBaseline>
       <ThemeProvider theme={theme}>
-      <PwaContext.Provider
+        <PwaContext.Provider
           value={{
             forceContextUserRefetch,
             logoutUserAndRedirectToLogin,
@@ -86,7 +90,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
           }}
         >
           <QueryClientProvider client={queryClient}>
-           {Component.getLayout &&
+            {Component.getLayout &&
               /*
               // @ts-ignore */
               Component.getLayout(<Component {...pageProps} />)}
@@ -100,9 +104,8 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
           </QueryClientProvider>
         </PwaContext.Provider>
       </ThemeProvider>
-      
     </CssBaseline>
   );
-}
+};
 
 export default appWithTranslation(App);

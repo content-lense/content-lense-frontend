@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+  cl-frontend:
+    container_name: cl-frontend
+    build:
+      context: ./
+      target: dev
+    ports:
+      - 3000:3000
