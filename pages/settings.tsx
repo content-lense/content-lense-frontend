@@ -45,7 +45,7 @@ const Settings: NextPage = () => {
         <title>Settings</title>
       </Head>
 
-      <Stack gap={5} sx={{maxWidth:800}}>
+      <Stack gap={5} sx={{ maxWidth: 800 }}>
         <Stack flexDirection="row">
           <Button
             sx={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
@@ -84,43 +84,60 @@ const Settings: NextPage = () => {
           />
         </Stack>
         <Stack flexDirection="column">
-          <Stack direction="row" justifyContent={"space-between"} alignSelf={"stretch"}>
+          <Stack
+            direction="row"
+            justifyContent={"space-between"}
+            alignSelf={"stretch"}
+          >
             <Typography variant="h5">Users</Typography>
-            <Button startIcon={<Add/>} variant="contained">Add</Button>
+            <Button startIcon={<Add />} variant="contained">
+              Add
+            </Button>
           </Stack>
-          
         </Stack>
 
         <Stack flexDirection="column" alignItems={"flex-start"}>
-            <Stack direction="row" justifyContent={"space-between"} alignSelf={"stretch"}>
-              <Typography variant="h5">Analysis Microservices</Typography>
-              <Button startIcon={<Add/>} variant="contained">Add</Button>
-            </Stack>
-            <AnalysisMicroserviceList />
-
-            
+          <Stack
+            direction="row"
+            justifyContent={"space-between"}
+            alignSelf={"stretch"}
+          >
+            <Typography variant="h5">Analysis Microservices</Typography>
+            <Button startIcon={<Add />} variant="contained">
+              Add
+            </Button>
+          </Stack>
+          <AnalysisMicroserviceList />
         </Stack>
 
         <Stack flexDirection="column">
-          <Stack direction="row" justifyContent={"space-between"} alignSelf={"stretch"}>
+          <Stack
+            direction="row"
+            justifyContent={"space-between"}
+            alignSelf={"stretch"}
+          >
             <Typography variant="h5">Webhooks</Typography>
-            <Button startIcon={<Add/>} variant="contained">Add</Button>
+            <Button startIcon={<Add />} variant="contained">
+              Add
+            </Button>
           </Stack>
           <WebhookList />
         </Stack>
 
         <Stack flexDirection="column">
-          <Stack direction="row" justifyContent={"space-between"} alignSelf={"stretch"}>
+          <Stack
+            direction="row"
+            justifyContent={"space-between"}
+            alignSelf={"stretch"}
+          >
             <Typography variant="h5">Article Sources</Typography>
-            <Button startIcon={<Add/>} variant="contained">Add</Button>
+            <Button startIcon={<Add />} variant="contained">
+              Add
+            </Button>
           </Stack>
           <ArticleSourceList />
         </Stack>
-
-        
       </Stack>
-      
-      
     </Stack>
   );
 };

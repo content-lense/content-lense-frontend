@@ -53,10 +53,8 @@ const AuthenticatedLayout: FC<AuthenticatedLayoutProps> = (props) => {
       <ConfigurableMenu ignoreRoles={true} items={MenuConfig} />
     </div>
   );
-  const {
-    logoutUserAndRedirectToLogin,
-    isLoadingUser, isAuthenticated, user
-  } = useContext(PwaContext);
+  const { logoutUserAndRedirectToLogin, isLoadingUser, isAuthenticated, user } =
+    useContext(PwaContext);
 
   useEffect(() => {
     if (isAuthenticated === false && !isLoadingUser && !user) {

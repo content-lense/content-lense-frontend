@@ -27,7 +27,7 @@ import Highlight from "react-highlight";
 import ArticleList from "../../components/ArticleList/ArticleList";
 import CreateArticleForm from "../../components/Forms/CreateArticleForm";
 
-function TabPanel(props:any) {
+function TabPanel(props: any) {
   const { children, value, index, ...other } = props;
 
   return (
