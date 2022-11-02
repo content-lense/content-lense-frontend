@@ -1,4 +1,5 @@
 import { ApiPlatformItemResponse } from "./ApiPlatformResponseInterface";
+import { ArticleComplexityInterface } from "./ArticleComplexityInterface";
 import { PersonInterface } from "./PersonInterface";
 
 interface ArticleMentionInterface extends ApiPlatformItemResponse{
@@ -20,6 +21,7 @@ export interface ArticleInterface extends ApiPlatformItemResponse{
     authors: PersonInterface[];
     articleAnalysisResults: string[];
     mentionedPersons: ArticleMentionInterface[];
+    complexities: ArticleComplexityInterface[];
 }
 
 
