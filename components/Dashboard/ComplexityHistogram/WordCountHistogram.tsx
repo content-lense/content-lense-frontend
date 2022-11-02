@@ -1,43 +1,39 @@
 import { useQuery } from "@tanstack/react-query";
-import { GenericGetItems } from "../../../data/ReactQueries";
-import { ArticleComplexityInterface } from "../../../interfaces/ArticleComplexityInterface";
 import { bin } from "d3-array";
 import {
+  TooltipProps,
   BarChart,
   XAxis,
   YAxis,
   Tooltip,
   Bar,
-  TooltipProps,
   ResponsiveContainer,
+  XAxisProps,
 } from "recharts";
-import { Props as XAxisProps } from "recharts/types/cartesian/XAxis";
-import { PureComponent } from "react";
+import { GenericGetItems } from "../../../data/ReactQueries";
+import { ArticleComplexityInterface } from "../../../interfaces/ArticleComplexityInterface";
 
-export default function ReadingTimeHistogram() {
-  const { data, isLoading } = useQuery(
-    ["articles-reading-time-in-minutes"],
-    () =>
-      GenericGetItems<ArticleComplexityInterface>("/article_complexities", {
-        queryString: "?part=body&properties[]=readingTimeInMinutes",
-      })
+export default function WordCountHistogram() {
+  const { data, isLoading } = useQuery(["articles-body-word-count"], () =>
+    GenericGetItems<ArticleComplexityInterface>("/article_complexities", {
+      queryString: "?part=body&properties[]=totalWords",
+    })
   );
-  const _bin = bin();
   if (!data || isLoading) {
     return <></>;
   }
-
-  function giveHistogramData(data: ArticleComplexityInterface[]) {
-    let readingTimes = data.map((date) => {
-      return date.readingTimeInMinutes;
+  const _bin = bin();
+  function giveHistogramData(_data: ArticleComplexityInterface[]) {
+    let wordCount = _data.map((article) => {
+      return article.totalWords;
     });
-    let binedReadingTimes = _bin(readingTimes);
-    let readingTimeData = binedReadingTimes.map(
+    let binedWords = _bin(wordCount);
+    let wordCountData = binedWords.map(
       ({ x0: from, x1: to, length: count, ...values }) => {
         return { from, to, count, values: Object.values(values) };
       }
     );
-    return readingTimeData;
+    return wordCountData;
   }
   const CustomTooltip = ({
     active,
@@ -52,7 +48,7 @@ export default function ReadingTimeHistogram() {
         >
           <span className="label">{`${payload[0].value} Artikel`}</span>
           <br />
-          <span className="label">{`mit einer Lesezeit zwischen  ${payload[0].payload.from} und ${payload[0].payload.to} Minuten`}</span>
+          <span className="label">{`mit einer Wortanzahl zwischen  ${payload[0].payload.from} und ${payload[0].payload.to}`}</span>
         </div>
       );
     }
@@ -73,7 +69,9 @@ export default function ReadingTimeHistogram() {
   ) {
     const { x, y, stroke, payload } = props;
 
-    if (payload && data)
+    if (payload && data) {
+      const from = giveHistogramData(data)[payload.value].from;
+      const to = giveHistogramData(data)[payload.value].to;
       return (
         <g transform={`translate(${x},${y})`}>
           <text
@@ -84,13 +82,11 @@ export default function ReadingTimeHistogram() {
             fill="#666"
             transform="rotate(-35)"
           >
-            {`${giveHistogramData(data)[payload.value].from} – ${
-              giveHistogramData(data)[payload.value].to
-            }`}
+            {`${from && from / 1000} – ${to && to / 1000}`}
           </text>
         </g>
       );
-    else return <></>;
+    } else return <></>;
   }
 
   return (
@@ -98,7 +94,7 @@ export default function ReadingTimeHistogram() {
       <BarChart data={giveHistogramData(data)} margin={{ bottom: 50 }}>
         <XAxis
           label={{
-            value: "Benötigte Lesezeit in Minuten",
+            value: "Wortanzahl in Tausend",
             position: "insideBottom",
             offset: -45,
           }}
@@ -113,7 +109,7 @@ export default function ReadingTimeHistogram() {
           }}
         />
         <Tooltip content={<CustomTooltip />} />
-        <Bar dataKey={"count"} name="Anzahl an Artikeln" fill="#8884d8" />
+        <Bar dataKey="count" name="Anzahl an Artikeln" fill="#8884d8" />
       </BarChart>
     </ResponsiveContainer>
   );
