@@ -14,7 +14,13 @@ import {
 import { Props as XAxisProps } from "recharts/types/cartesian/XAxis";
 import { PureComponent } from "react";
 
-export default function ReadingTimeHistogram() {
+interface ReadingTimeHistogramPropsInterface {
+  onClick: (rangeLowerBoundary: number, rangeUpperBoundary: number) => void;
+}
+
+export default function ReadingTimeHistogram(
+  props: ReadingTimeHistogramPropsInterface
+) {
   const { data, isLoading } = useQuery(
     ["articles-reading-time-in-minutes"],
     () =>
@@ -113,7 +119,12 @@ export default function ReadingTimeHistogram() {
           }}
         />
         <Tooltip content={<CustomTooltip />} />
-        <Bar dataKey={"count"} name="Anzahl an Artikeln" fill="#8884d8" />
+        <Bar
+          dataKey={"count"}
+          name="Anzahl an Artikeln"
+          fill="#8884d8"
+          onClick={(e) => props.onClick(e.from, e.to)}
+        />
       </BarChart>
     </ResponsiveContainer>
   );

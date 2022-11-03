@@ -1,24 +1,63 @@
 import { Box } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridFilterModel,
+  GridToolbar,
+} from "@mui/x-data-grid";
 import { useQuery } from "@tanstack/react-query";
+import { useCallback, useEffect, useState } from "react";
+import { filterProps } from "recharts/types/util/types";
 import { GenericGetItems } from "../../../data/ReactQueries";
 import { ArticleComplexityInterface } from "../../../interfaces/ArticleComplexityInterface";
 import { ArticleComplexityListColumns } from "./ArticleComplexityListColumns";
+import RangeFilterComponent, {
+  RangeFilterChangedInterface,
+  RangeFilterFieldProps,
+} from "./RangeFilterComponent";
 
-export default function ArticleComplexityList() {
-  const { data: articleData, isLoading } = useQuery(["articles"], () =>
-    GenericGetItems<ArticleComplexityInterface[]>("/article_complexities")
-  );
+interface ArticleComplexityListPropsInterface {
+  articleData: ArticleComplexityInterface[];
+  isLoading: boolean;
+  onRangeFilterChange: (obj: RangeFilterChangedInterface) => void;
+}
 
-  console.log(isLoading, articleData, "artData");
-
-  if (!articleData || isLoading) return <></>;
-  let columns = ArticleComplexityListColumns;
-  console.log(columns, "cols, rows", articleData);
+export default function ArticleComplexityList(
+  props: ArticleComplexityListPropsInterface
+) {
+  const fieldData = props.articleData
+    ? ArticleComplexityListColumns.filter(
+        (column) => column.type === "number"
+      ).map((column) => {
+        return {
+          field: column.field,
+          label: column.headerName ?? column.field,
+          upperBoundary: Math.max(
+            ...props.articleData.map(
+              (article) => article[column.field] as number
+            )
+          ),
+          lowerBoundary: Math.min(
+            ...props.articleData.map(
+              (article) => article[column.field] as number
+            )
+          ),
+        };
+      })
+    : [];
+  console.log(fieldData, "fieldData");
   return (
     <>
       <Box sx={{ height: 400, width: "100%" }}>
-        <DataGrid columns={columns} rows={articleData} />
+        <RangeFilterComponent
+          fields={fieldData}
+          onChange={props.onRangeFilterChange}
+        />
+        <DataGrid
+          loading={props.isLoading}
+          columns={ArticleComplexityListColumns}
+          rows={props.articleData ?? []}
+        />
       </Box>
     </>
   );
