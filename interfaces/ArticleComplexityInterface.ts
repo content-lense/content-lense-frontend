@@ -6,4 +6,8 @@ export interface ArticleComplexityInterface{
     readingTimeInMinutes: number;
     totalWords: number;
     part: string;
+    meanWordsPerSentence: number;
+    totalSentences: number;
+    totalChars: number;
+    meanCharsPerWord: number;
 }

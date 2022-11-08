@@ -6,6 +6,7 @@ specifiers:
   '@mui/icons-material': ^5.10.6
   '@mui/lab': ^5.0.0-alpha.97
   '@mui/material': ^5.10.6
+  '@mui/x-data-grid': ^5.17.9
   '@tanstack/react-query': ^4.10.3
   '@types/d3-array': ^3.0.3
   '@types/node': 18.7.18
@@ -37,6 +38,7 @@ dependencies:
   '@mui/icons-material': 5.10.9_5fncb4nagb4cvvcnwamw2rozfa
   '@mui/lab': 5.0.0-alpha.103_7z2j6hsfhotn2h552vujemizua
   '@mui/material': 5.10.9_af5ln35zuaotaffazii6n6bke4
+  '@mui/x-data-grid': 5.17.9_x7vtq4go3jz4nx6ojd6lju2rf4
   '@tanstack/react-query': 4.10.3_biqbaboplfbrettd7655fr4n2y
   '@types/react-highlight': 0.12.5
   d3-array: 3.2.0
@@ -710,6 +712,26 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
       react-is: 18.2.0
+    dev: false
+
+  /@mui/x-data-grid/5.17.9_x7vtq4go3jz4nx6ojd6lju2rf4:
+    resolution: {integrity: sha512-D87M4BVmbSR0ZRJoev7JS01YUVk2NQPCwseVb/Su0/UScpCfUpKlukmMXx0jJnd3066pjYSKIIdvVit3nQU/UA==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      '@mui/material': ^5.4.1
+      '@mui/system': ^5.4.1
+      react: ^17.0.2 || ^18.0.0
+      react-dom: ^17.0.2 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.19.4
+      '@mui/material': 5.10.9_af5ln35zuaotaffazii6n6bke4
+      '@mui/system': 5.10.9_4mv32nu4vciambuqqzuu4gtvj4
+      '@mui/utils': 5.10.9_react@18.2.0
+      clsx: 1.2.1
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      reselect: 4.1.6
     dev: false
 
   /@next/env/12.3.1:
@@ -2832,6 +2854,10 @@ packages:
     resolution: {integrity: sha512-pq2bWo9mVD43nbts2wGv17XLiNLya+GklZ8kaDLV2Z08gDCsGpnKn9BFMepvWuHCbyVvY7J5o5+BVvoQbmlJLg==}
     engines: {node: '>=8'}
     dev: true
+
+  /reselect/4.1.6:
+    resolution: {integrity: sha512-ZovIuXqto7elwnxyXbBtCPo9YFEr3uJqj2rRbcOOog1bmu2Ag85M4hixSwFWyaBMKXNgvPaJ9OSu9SkBPIeJHQ==}
+    dev: false
 
   /resolve-from/4.0.0:
     resolution: {integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==}
