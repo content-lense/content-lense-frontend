@@ -1,14 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import {
-  Button,
-  IconButton,
-  InputAdornment,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, IconButton, InputAdornment, Stack, TextField, Typography } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
@@ -19,8 +12,7 @@ import ArticleSourceList from "../components/ArticleSource/ArticleSourceList";
 
 function makeid(length = 32) {
   var result = "";
-  var characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   var charactersLength = characters.length;
   for (var i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -30,9 +22,7 @@ function makeid(length = 32) {
 
 const Settings: NextPage = () => {
   const [showApiKey, setShowApiKey] = useState(false);
-  const [apiKey, setApiKey] = useState(
-    Buffer.from(makeid()).toString("base64")
-  );
+  const [apiKey, setApiKey] = useState(Buffer.from(makeid()).toString("base64"));
 
   function resetApiKey() {
     setApiKey(Buffer.from(makeid()).toString("base64"));
@@ -75,20 +65,14 @@ const Settings: NextPage = () => {
                   onClick={() => setShowApiKey(!showApiKey)}
                   position="end"
                 >
-                  <IconButton>
-                    {showApiKey ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                  </IconButton>
+                  <IconButton>{showApiKey ? <VisibilityIcon /> : <VisibilityOffIcon />}</IconButton>
                 </InputAdornment>
               ),
             }}
           />
         </Stack>
         <Stack flexDirection="column">
-          <Stack
-            direction="row"
-            justifyContent={"space-between"}
-            alignSelf={"stretch"}
-          >
+          <Stack direction="row" justifyContent={"space-between"} alignSelf={"stretch"}>
             <Typography variant="h5">Users</Typography>
             <Button startIcon={<Add />} variant="contained">
               Add
@@ -97,11 +81,7 @@ const Settings: NextPage = () => {
         </Stack>
 
         <Stack flexDirection="column" alignItems={"flex-start"}>
-          <Stack
-            direction="row"
-            justifyContent={"space-between"}
-            alignSelf={"stretch"}
-          >
+          <Stack direction="row" justifyContent={"space-between"} alignSelf={"stretch"}>
             <Typography variant="h5">Analysis Microservices</Typography>
             <Button startIcon={<Add />} variant="contained">
               Add
@@ -111,11 +91,7 @@ const Settings: NextPage = () => {
         </Stack>
 
         <Stack flexDirection="column">
-          <Stack
-            direction="row"
-            justifyContent={"space-between"}
-            alignSelf={"stretch"}
-          >
+          <Stack direction="row" justifyContent={"space-between"} alignSelf={"stretch"}>
             <Typography variant="h5">Webhooks</Typography>
             <Button startIcon={<Add />} variant="contained">
               Add
@@ -125,11 +101,7 @@ const Settings: NextPage = () => {
         </Stack>
 
         <Stack flexDirection="column">
-          <Stack
-            direction="row"
-            justifyContent={"space-between"}
-            alignSelf={"stretch"}
-          >
+          <Stack direction="row" justifyContent={"space-between"} alignSelf={"stretch"}>
             <Typography variant="h5">Article Sources</Typography>
             <Button startIcon={<Add />} variant="contained">
               Add

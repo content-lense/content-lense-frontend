@@ -70,8 +70,7 @@ const ConfigurableMenu: FC<ConfigurableMenuProps> = (props) => {
             {itemsByGroups[key]
               .filter(
                 (item) =>
-                  roles.some((role) => item.displayForRoles?.includes(role)) ||
-                  props.ignoreRoles
+                  roles.some((role) => item.displayForRoles?.includes(role)) || props.ignoreRoles
               )
               .map((props) => (
                 <ConfigurableMenuItem

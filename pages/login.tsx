@@ -19,7 +19,7 @@ export default function Page() {
       window.location.href = router.query.returnTo! as string;
     }
     router.push("/entities/articles");
-    
+
     return null;
   }
 

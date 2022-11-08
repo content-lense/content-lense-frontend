@@ -8,8 +8,9 @@
     "settings": "Einstellungen",
     "logout": "Logout",
     "dashboard": "Dashboard",
+    "textComplexity": "Textkomplexität",
     "group": {
-      "default": "Home",
+      "default": "Dashboards",
       "entities": "Entitäten",
       "settings": "Einstellungen"
     }
