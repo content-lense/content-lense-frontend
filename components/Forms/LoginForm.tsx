@@ -46,10 +46,7 @@ const LoginForm = () => {
   const { forceContextUserRefetch: onUserLoggedIn } = useContext(PwaContext);
   const { t } = useTranslation();
   const validationSchema = yup.object({
-    email: yup
-      .string()
-      .email(t("Enter a valid email"))
-      .required(t("Email is required")),
+    email: yup.string().email(t("Enter a valid email")).required(t("Email is required")),
     password: yup
       .string()
       .min(8, t("Password should be of minimum 8 characters length"))
@@ -86,7 +83,7 @@ const LoginForm = () => {
             setSubmissionError("Invalid token");
           }
         }
-      } catch (e:any) {
+      } catch (e: any) {
         setSubmissionError(e.message);
       }
     },
@@ -100,9 +97,7 @@ const LoginForm = () => {
             <Grid item xs={12}>
               <Stack>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
-                    {t("Dev Login Selection")}
-                  </InputLabel>
+                  <InputLabel id="demo-simple-select-label">{t("Dev Login Selection")}</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     label={t("Dev Login Selection")}
@@ -112,12 +107,8 @@ const LoginForm = () => {
                       formik.setValues(selectedLogin);
                     }}
                   >
-                    <MenuItem value={DevLoginType.Admin}>
-                      {DevLoginType.Admin}
-                    </MenuItem>
-                    <MenuItem value={DevLoginType.User}>
-                      {DevLoginType.User}
-                    </MenuItem>
+                    <MenuItem value={DevLoginType.Admin}>{DevLoginType.Admin}</MenuItem>
+                    <MenuItem value={DevLoginType.User}>{DevLoginType.User}</MenuItem>
                   </Select>
                 </FormControl>
               </Stack>
@@ -171,9 +162,7 @@ const LoginForm = () => {
                   </Alert>*/}
           </Grid>
           <Grid item xs={12}>
-            {submissionError != null && (
-              <Alert severity="error">{submissionError}</Alert>
-            )}
+            {submissionError != null && <Alert severity="error">{submissionError}</Alert>}
           </Grid>
         </Grid>
       </form>

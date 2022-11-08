@@ -88,13 +88,8 @@ const SetNewPasswordForm = () => {
                 formik.handleChange(e);
                 setLastPassword(e.target.value);
               }}
-              error={
-                formik.touched.repeatPassword &&
-                Boolean(formik.errors.repeatPassword)
-              }
-              helperText={
-                formik.touched.repeatPassword && formik.errors.repeatPassword
-              }
+              error={formik.touched.repeatPassword && Boolean(formik.errors.repeatPassword)}
+              helperText={formik.touched.repeatPassword && formik.errors.repeatPassword}
             />
           </Grid>
           <Grid item xs={12}>
@@ -119,9 +114,7 @@ const SetNewPasswordForm = () => {
             </LoadingButton>
           </Grid>
           <Grid item xs={12}>
-            {submissionError != null && (
-              <Alert severity="error">{submissionError}</Alert>
-            )}
+            {submissionError != null && <Alert severity="error">{submissionError}</Alert>}
           </Grid>
         </Grid>
       </form>

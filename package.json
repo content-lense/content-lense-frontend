@@ -6,7 +6,21 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "src/**/*.{html,ts,scss}": [
+      "prettier --write"
+    ],
+    "src/**/*.ts": [
+      "eslint --fix"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -14,8 +28,10 @@
     "@mui/icons-material": "^5.10.6",
     "@mui/lab": "^5.0.0-alpha.97",
     "@mui/material": "^5.10.6",
+    "@mui/x-data-grid": "^5.17.9",
     "@tanstack/react-query": "^4.10.3",
     "@types/react-highlight": "^0.12.5",
+    "d3-array": "^3.2.0",
     "formik": "^2.2.9",
     "highlight.js": "^11.6.0",
     "jwt-decode": "^3.1.2",
@@ -27,15 +43,28 @@
     "react-dom": "18.2.0",
     "react-highlight": "^0.14.0",
     "react-password-strength-bar": "^0.4.1",
+    "recharts": "^2.1.15",
     "universal-cookie": "^4.0.4",
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.19.1",
+    "@next/eslint-plugin-next": "^13.0.2",
+    "@types/d3-array": "^3.0.3",
     "@types/node": "18.7.18",
     "@types/react": "18.0.20",
     "@types/react-dom": "18.0.6",
-    "eslint": "8.23.1",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "eslint": "^8.0.1",
     "eslint-config-next": "12.3.1",
-    "typescript": "4.8.3"
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.31.10",
+    "husky": "^8.0.2",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
+    "typescript": "*"
   }
 }
