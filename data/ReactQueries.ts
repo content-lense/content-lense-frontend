@@ -10,9 +10,21 @@ export const DefaultQueryFn = async (a:unknown, queryKey: QueryKey) => {
     return data.json();
 };
 
-export const GenericGetItems = async <T extends unknown>(entity:string, queryString?:string) => {
+export interface ApiPlatformQueryParams {
+    page?: number;
+    itemsPerPage?: number;
+    rangeOperator?: "between";
+    rangeLowerBoundary?: string;
+    rangeUpperBoundary?: string;
+}
 
-    const req = await ApiFetch(entity + (typeof queryString === "undefined" ? "" : queryString));
+export interface GenericGetItemsOptions extends ApiPlatformQueryParams {
+    queryString?: string;
+}
+
+export const GenericGetItems = async <T extends unknown>(entity:string, options?: GenericGetItemsOptions) => {
+    const req = await ApiFetch(entity + (!options || typeof options.queryString === "undefined" ? "" : 
+    options.queryString + (options.rangeOperator ? `[${options.rangeOperator}]=${options.rangeLowerBoundary}..${options.rangeUpperBoundary}`:"")));
     const payload = await req.json() as ApiPlatformResponse<T>;
     let elements = payload["hydra:member"];
     elements = elements.map(e => {

@@ -1,5 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import { TooltipProps, BarChart, XAxis, YAxis, Tooltip, Bar } from "recharts";
+import {
+  TooltipProps,
+  BarChart,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Bar,
+  ResponsiveContainer,
+} from "recharts";
 import { GenericGetItems } from "../../../data/ReactQueries";
 import { ArticleComplexityInterface } from "../../../interfaces/ArticleComplexityInterface";
 
@@ -7,9 +15,9 @@ export default function WienerSachtextIndexHistogram() {
   const { data, isLoading } = useQuery(
     ["articles-body-wiener-sachtext-index"],
     () =>
-      GenericGetItems<ArticleComplexityInterface>(
-        "/article_complexities?part=body&properties[]=wienerSachtextIndex"
-      )
+      GenericGetItems<ArticleComplexityInterface>("/article_complexities", {
+        queryString: "?part=body&properties[]=wienerSachtextIndex",
+      })
   );
   if (!data || isLoading) {
     return <></>;
@@ -59,26 +67,28 @@ export default function WienerSachtextIndexHistogram() {
   }
 
   return (
-    <BarChart width={500} height={400} data={giveHistogramData(data)}>
-      <XAxis
-        dataKey="wienerIndex"
-        label={{
-          value: "Wiener-Sachtextindex",
-          position: "insideBottom",
-          offset: -5,
-        }}
-        tickFormatter={formatXAxis}
-      />
-      <YAxis
-        label={{
-          value: "Anzahl Artikel",
-          angle: -90,
-          offset: 20,
-          position: "insideLeft",
-        }}
-      />
-      <Tooltip content={<CustomTooltip />} />
-      <Bar dataKey="count" name="Anzahl an Artikeln" fill="#8884d8" />
-    </BarChart>
+    <ResponsiveContainer>
+      <BarChart data={giveHistogramData(data)} margin={{ bottom: 50 }}>
+        <XAxis
+          dataKey="wienerIndex"
+          label={{
+            value: "Wiener-Sachtextindex",
+            position: "insideBottom",
+            offset: -45,
+          }}
+          tickFormatter={formatXAxis}
+        />
+        <YAxis
+          label={{
+            value: "Anzahl Artikel",
+            angle: -90,
+            offset: 20,
+            position: "insideLeft",
+          }}
+        />
+        <Tooltip content={<CustomTooltip />} />
+        <Bar dataKey="count" name="Anzahl an Artikeln" fill="#8884d8" />
+      </BarChart>
+    </ResponsiveContainer>
   );
 }
