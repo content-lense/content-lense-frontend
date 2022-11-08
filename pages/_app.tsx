@@ -55,13 +55,7 @@ export const theme = createTheme({
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const router = useRouter();
-  const {
-    user,
-    isAuthenticated,
-    isLoading: isLoadingUser,
-    setUser,
-    refetch,
-  } = useUser();
+  const { user, isAuthenticated, isLoading: isLoadingUser, setUser, refetch } = useUser();
 
   function forceContextUserRefetch() {
     refetch();

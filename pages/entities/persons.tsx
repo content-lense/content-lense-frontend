@@ -13,7 +13,6 @@ const Persons: NextPage = () => {
       <Typography variant="h4">Person list</Typography>
       <PersonList />
     </Stack>
-    
   );
 };
 

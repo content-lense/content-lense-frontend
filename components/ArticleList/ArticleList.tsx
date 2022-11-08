@@ -5,11 +5,22 @@ import { CircularProgress, Divider, List, Typography } from "@mui/material";
 import ArticleListItem from "./ArticleListItem";
 
 function ArticleList() {
-    const { data, isLoading } = useQuery(["articles"], () => GenericGetItems<ArticleInterface>("/articles"));
-    if(isLoading || !data){
-        return <CircularProgress />
-    }
-    return ( <List>{data.map(a => <><ArticleListItem article={a} /><Divider /></>)}</List>)
+  const { data, isLoading } = useQuery(["articles"], () =>
+    GenericGetItems<ArticleInterface>("/articles")
+  );
+  if (isLoading || !data) {
+    return <CircularProgress />;
+  }
+  return (
+    <List>
+      {data.map((a) => (
+        <>
+          <ArticleListItem article={a} />
+          <Divider />
+        </>
+      ))}
+    </List>
+  );
 }
 
 export default ArticleList;

@@ -2,15 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { GenericGetItems } from "../../../data/ReactQueries";
 import { ArticleComplexityInterface } from "../../../interfaces/ArticleComplexityInterface";
 import d3Array from "d3-array";
-import {
-  BarChart,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Bar,
-  ResponsiveContainer,
-  TooltipProps,
-} from "recharts";
+import { BarChart, XAxis, YAxis, Tooltip, Bar, ResponsiveContainer, TooltipProps } from "recharts";
 import { Props as XAxisProps } from "recharts/types/cartesian/XAxis";
 import { PureComponent } from "react";
 
@@ -19,12 +11,10 @@ interface ReadingTimeHistogramProps {
 }
 
 export default function ReadingTimeHistogram(props: ReadingTimeHistogramProps) {
-  const { data, isLoading } = useQuery(
-    ["articles-reading-time-in-minutes"],
-    () =>
-      GenericGetItems<ArticleComplexityInterface>(
-        "/article_complexities?part=body&properties[]=readingTimeInMinutes"
-      )
+  const { data, isLoading } = useQuery(["articles-reading-time-in-minutes"], () =>
+    GenericGetItems<ArticleComplexityInterface>(
+      "/article_complexities?part=body&properties[]=readingTimeInMinutes"
+    )
   );
   const bin = d3Array.bin();
   if (!data || isLoading) {
@@ -42,11 +32,7 @@ export default function ReadingTimeHistogram(props: ReadingTimeHistogramProps) {
     );
     return readingTimeData;
   }
-  const CustomTooltip = ({
-    active,
-    payload,
-    label,
-  }: TooltipProps<number, string>) => {
+  const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
     if (active && payload && payload.length) {
       return (
         <div
@@ -80,14 +66,7 @@ export default function ReadingTimeHistogram(props: ReadingTimeHistogramProps) {
     if (payload && data)
       return (
         <g transform={`translate(${x},${y})`}>
-          <text
-            x={0}
-            y={0}
-            dy={16}
-            textAnchor="end"
-            fill="#666"
-            transform="rotate(-35)"
-          >
+          <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">
             {`${giveHistogramData(data)[payload.value].from} – ${
               giveHistogramData(data)[payload.value].to
             }`}

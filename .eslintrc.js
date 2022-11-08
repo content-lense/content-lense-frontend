@@ -1,9 +1,10 @@
 module.exports = {
+  parser: "@babel/eslint-parser",
   env: {
     browser: true,
-    es2021: true,
+    node: true,
   },
-  extends: ["next", "plugin:react/recommended", "standard-with-typescript"],
+  extends: ["next"],
   overrides: [],
   parserOptions: {
     ecmaVersion: "latest",
@@ -11,4 +12,9 @@ module.exports = {
   },
   plugins: ["react"],
   rules: {},
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
 };
