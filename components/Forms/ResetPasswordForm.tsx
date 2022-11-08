@@ -19,10 +19,7 @@ const ResetPasswordForm: FC<ResetPasswordFormProps> = (props) => {
 
   const { t } = useTranslation();
   const validationSchema = yup.object({
-    email: yup
-      .string()
-      .email(t("Enter a valid email"))
-      .required(t("Email is required")),
+    email: yup.string().email(t("Enter a valid email")).required(t("Email is required")),
   });
   const formik = useFormik({
     initialValues: {
@@ -74,9 +71,7 @@ const ResetPasswordForm: FC<ResetPasswordFormProps> = (props) => {
             </LoadingButton>
           </Grid>
           <Grid item xs={12}>
-            {submissionError != null && (
-              <Alert severity="error">{submissionError}</Alert>
-            )}
+            {submissionError != null && <Alert severity="error">{submissionError}</Alert>}
           </Grid>
         </Grid>
       </form>

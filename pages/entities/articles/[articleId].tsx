@@ -10,44 +10,52 @@ import { ArticleInterface } from "../../../interfaces/ArticleInterface";
 import { useTranslation } from "next-i18next";
 
 export default function Page() {
-  const { t } = useTranslation();
-
   const router = useRouter();
   const query = router.query;
   const articleId = query.articleId as string;
 
-  const { data: article, isLoading: articleLoading } = useQuery(["articles", articleId], () => GenericGetItem<ArticleInterface>("/articles/"+articleId));
+  const { data: article, isLoading: articleLoading } = useQuery(["articles", articleId], () =>
+    GenericGetItem<ArticleInterface>("/articles/" + articleId)
+  );
   if (articleLoading || !article) {
     return <CircularProgress />;
   }
   return (
     <>
-        <Head>
-            <title>{article.title}</title>
-        </Head>
+      <Head>
+        <title>{article.title}</title>
+      </Head>
 
-        <Stack gap={5} sx={{maxWidth:800}}>
-            <Stack>
-                <Typography variant="h4">{article.title}</Typography>
-            </Stack>
-            <Stack>
-                <Typography variant="h5">Abstract</Typography>
-                <Typography variant="body1">{article.abstract}</Typography>
-            </Stack>
-            <Stack>
-                <Typography variant="h5">Authors</Typography>
-                <Stack direction="row" gap={2}>
-                    {article.authors && article.authors.map(a => <Chip label={`${a.firstName} ${a.lastName}`} />)}
-                </Stack>
-            </Stack>
-            <Divider />
-            <Stack >
-                <Typography variant="h5">Mentioned people</Typography>
-                <Stack direction="row" gap={2}>
-                    {article.mentionedPersons && article.mentionedPersons.map(a => <Chip label={`${a.person.firstName} ${a.person.lastName} (${a.mentionCount}x)`} />)}
-                </Stack>
-            </Stack>
+      <Stack gap={5} sx={{ maxWidth: 800 }}>
+        <Stack>
+          <Typography variant="h4">{article.title}</Typography>
         </Stack>
+        <Stack>
+          <Typography variant="h5">Abstract</Typography>
+          <Typography variant="body1">{article.abstract}</Typography>
+        </Stack>
+        <Stack>
+          <Typography variant="h5">Authors</Typography>
+          <Stack direction="row" gap={2}>
+            {article.authors &&
+              article.authors.map(({ id, firstName, lastName }) => (
+                <Chip key={id} label={`${firstName} ${lastName}`} />
+              ))}
+          </Stack>
+        </Stack>
+        <Divider />
+        <Stack>
+          <Typography variant="h5">Mentioned people</Typography>
+          <Stack direction="row" gap={2}>
+            {article.mentionedPersons &&
+              article.mentionedPersons.map(
+                ({ id, mentionCount, person: { lastName, firstName } }) => (
+                  <Chip key={id} label={`${firstName} ${lastName} (${mentionCount}x)`} />
+                )
+              )}
+          </Stack>
+        </Stack>
+      </Stack>
     </>
   );
 }

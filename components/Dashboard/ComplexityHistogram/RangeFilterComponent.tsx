@@ -1,13 +1,4 @@
-import {
-  Box,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  Slider,
-  Stack,
-} from "@mui/material";
+import { Box, FormControl, Grid, InputLabel, MenuItem, Select, Slider, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export interface RangeFilterFieldProps {
@@ -63,12 +54,10 @@ export default function RangeFilter(props: RangeFilterProps) {
           onChange={(e) => {
             setSelectValue(e.target.value);
             setMaxSliderValue(
-              props.fields.find((field) => field.field === e.target.value)
-                ?.upperBoundary ?? 100
+              props.fields.find((field) => field.field === e.target.value)?.upperBoundary ?? 100
             );
             setMinSliderValue(
-              props.fields.find((field) => field.field === e.target.value)
-                ?.lowerBoundary ?? 0
+              props.fields.find((field) => field.field === e.target.value)?.lowerBoundary ?? 0
             );
           }}
         >

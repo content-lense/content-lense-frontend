@@ -15,7 +15,7 @@ You can find a manual on how to setup a fully working stack of `Content Lense` h
 ## Start the development stack
 
 - this project uses [pnpm](https://pnpm.io/) instead of yarn / npm
-- to start to project in development, simply run 
+- to start to project in development, simply run
 
 ```bash
 # Checkout and start the frontend

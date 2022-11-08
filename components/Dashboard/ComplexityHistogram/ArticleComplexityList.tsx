@@ -1,10 +1,5 @@
 import { Box } from "@mui/material";
-import {
-  DataGrid,
-  GridColDef,
-  GridFilterModel,
-  GridToolbar,
-} from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridFilterModel, GridToolbar } from "@mui/x-data-grid";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useState } from "react";
 import { filterProps } from "recharts/types/util/types";
@@ -22,25 +17,17 @@ interface ArticleComplexityListPropsInterface {
   onRangeFilterChange: (obj: RangeFilterChangedInterface) => void;
 }
 
-export default function ArticleComplexityList(
-  props: ArticleComplexityListPropsInterface
-) {
+export default function ArticleComplexityList(props: ArticleComplexityListPropsInterface) {
   const fieldData = props.articleData
-    ? ArticleComplexityListColumns.filter(
-        (column) => column.type === "number"
-      ).map((column) => {
+    ? ArticleComplexityListColumns.filter((column) => column.type === "number").map((column) => {
         return {
           field: column.field,
           label: column.headerName ?? column.field,
           upperBoundary: Math.max(
-            ...props.articleData.map(
-              (article) => article[column.field] as number
-            )
+            ...props.articleData.map((article) => article[column.field] as number)
           ),
           lowerBoundary: Math.min(
-            ...props.articleData.map(
-              (article) => article[column.field] as number
-            )
+            ...props.articleData.map((article) => article[column.field] as number)
           ),
         };
       })
@@ -49,10 +36,7 @@ export default function ArticleComplexityList(
   return (
     <>
       <Box sx={{ height: 400, width: "100%" }}>
-        <RangeFilterComponent
-          fields={fieldData}
-          onChange={props.onRangeFilterChange}
-        />
+        <RangeFilterComponent fields={fieldData} onChange={props.onRangeFilterChange} />
         <DataGrid
           loading={props.isLoading}
           columns={ArticleComplexityListColumns}
