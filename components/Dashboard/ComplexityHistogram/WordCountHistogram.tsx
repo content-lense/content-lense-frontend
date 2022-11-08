@@ -28,18 +28,12 @@ export default function WordCountHistogram() {
       return article.totalWords;
     });
     let binedWords = _bin(wordCount);
-    let wordCountData = binedWords.map(
-      ({ x0: from, x1: to, length: count, ...values }) => {
-        return { from, to, count, values: Object.values(values) };
-      }
-    );
+    let wordCountData = binedWords.map(({ x0: from, x1: to, length: count, ...values }) => {
+      return { from, to, count, values: Object.values(values) };
+    });
     return wordCountData;
   }
-  const CustomTooltip = ({
-    active,
-    payload,
-    label,
-  }: TooltipProps<number, string>) => {
+  const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
     if (active && payload && payload.length) {
       return (
         <div
@@ -74,14 +68,7 @@ export default function WordCountHistogram() {
       const to = giveHistogramData(data)[payload.value].to;
       return (
         <g transform={`translate(${x},${y})`}>
-          <text
-            x={0}
-            y={0}
-            dy={16}
-            textAnchor="end"
-            fill="#666"
-            transform="rotate(-35)"
-          >
+          <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">
             {`${from && from / 1000} – ${to && to / 1000}`}
           </text>
         </g>

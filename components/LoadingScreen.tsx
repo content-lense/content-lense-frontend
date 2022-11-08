@@ -3,7 +3,6 @@ import { Box, CircularProgress } from "@mui/material";
 import Image from "next/image";
 
 export default function LoadingScreen() {
-
   return (
     <>
       <div
@@ -25,12 +24,7 @@ export default function LoadingScreen() {
             cursor: "pointer",
           }}
         >
-          <Image
-            layout="fill"
-            objectFit="contain"
-            alt={"Content Lense"}
-            src="/images/logo.png"
-          />
+          <Image layout="fill" objectFit="contain" alt={"Content Lense"} src="/images/logo.png" />
         </Box>
         <CircularProgress />
       </div>

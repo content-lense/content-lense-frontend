@@ -6,11 +6,22 @@ import PersonListItem from "./PersonListItem";
 import { PersonInterface } from "../../interfaces/PersonInterface";
 
 function PersonList() {
-    const { data, isLoading } = useQuery(["persons"], () => GenericGetItems<PersonInterface>("/people"));
-    if(isLoading || !data){
-        return <CircularProgress />
-    }
-    return ( <List>{data.map(p => <><PersonListItem person={p} /><Divider /></>)}</List>)
+  const { data, isLoading } = useQuery(["persons"], () =>
+    GenericGetItems<PersonInterface>("/people")
+  );
+  if (isLoading || !data) {
+    return <CircularProgress />;
+  }
+  return (
+    <List>
+      {data.map((p) => (
+        <>
+          <PersonListItem person={p} />
+          <Divider />
+        </>
+      ))}
+    </List>
+  );
 }
 
 export default PersonList;

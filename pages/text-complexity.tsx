@@ -26,13 +26,8 @@ const Home: NextPage = () => {
     });
   }
 
-  const { data: articleData, isLoading } = useQuery(
-    ["articles", queryOptions],
-    () =>
-      GenericGetItems<ArticleComplexityInterface>(
-        "/article_complexities",
-        queryOptions
-      )
+  const { data: articleData, isLoading } = useQuery(["articles", queryOptions], () =>
+    GenericGetItems<ArticleComplexityInterface>("/article_complexities", queryOptions)
   );
   return (
     <Stack spacing={4}>

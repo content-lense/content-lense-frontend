@@ -93,21 +93,10 @@ const Articles: NextPage = () => {
         <AccordionDetails>
           <Stack>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <Tabs
-                value={selectedTab}
-                onChange={(e, value) => setSelectedTab(value)}
-              >
-                <Tab
-                  icon={<Image width={32} height={32} src="/icons/js.png" />}
-                />
-                <Tab
-                  icon={<Image width={32} height={32} src="/icons/php.png" />}
-                />
-                <Tab
-                  icon={
-                    <Image width={32} height={32} src="/icons/python.png" />
-                  }
-                />
+              <Tabs value={selectedTab} onChange={(e, value) => setSelectedTab(value)}>
+                <Tab icon={<Image width={32} height={32} src="/icons/js.png" />} />
+                <Tab icon={<Image width={32} height={32} src="/icons/php.png" />} />
+                <Tab icon={<Image width={32} height={32} src="/icons/python.png" />} />
               </Tabs>
             </Box>
             <TabPanel value={selectedTab} index={0}>

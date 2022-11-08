@@ -27,9 +27,7 @@ const ConfigurableMenuItem: FC<ConfigurableMenuItemProps> = (props) => {
       <ListItem
         disablePadding
         sx={{
-          borderLeft: props.isSelected
-            ? "10px solid " + theme.palette.secondary.main
-            : undefined,
+          borderLeft: props.isSelected ? "10px solid " + theme.palette.secondary.main : undefined,
           transition: "border 600ms",
         }}
       >

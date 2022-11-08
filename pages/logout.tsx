@@ -8,19 +8,17 @@ import { logoutUser } from "../data/UserData";
 import { useUser } from "../helpers/useUser";
 
 export default function Page() {
-  useEffect( () => {
+  useEffect(() => {
     console.log("Logging out user");
     const logout = async () => {
       await logoutUser();
-      setTimeout( () => router.push("/login"), 2000);
-    }
+      setTimeout(() => router.push("/login"), 2000);
+    };
     logout();
-  }, [])
+  }, []);
 
-  return <LoadingScreen />
+  return <LoadingScreen />;
 }
-
-
 
 Page.getLayout = function getLayout(page: ReactElement) {
   /** @ts-ignore */

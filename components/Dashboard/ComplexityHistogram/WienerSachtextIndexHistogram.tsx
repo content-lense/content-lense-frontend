@@ -1,23 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  TooltipProps,
-  BarChart,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Bar,
-  ResponsiveContainer,
-} from "recharts";
+import { TooltipProps, BarChart, XAxis, YAxis, Tooltip, Bar, ResponsiveContainer } from "recharts";
 import { GenericGetItems } from "../../../data/ReactQueries";
 import { ArticleComplexityInterface } from "../../../interfaces/ArticleComplexityInterface";
 
 export default function WienerSachtextIndexHistogram() {
-  const { data, isLoading } = useQuery(
-    ["articles-body-wiener-sachtext-index"],
-    () =>
-      GenericGetItems<ArticleComplexityInterface>("/article_complexities", {
-        queryString: "?part=body&properties[]=wienerSachtextIndex",
-      })
+  const { data, isLoading } = useQuery(["articles-body-wiener-sachtext-index"], () =>
+    GenericGetItems<ArticleComplexityInterface>("/article_complexities", {
+      queryString: "?part=body&properties[]=wienerSachtextIndex",
+    })
   );
   if (!data || isLoading) {
     return <></>;
@@ -29,21 +19,15 @@ export default function WienerSachtextIndexHistogram() {
     return _data
       .map(({ wienerSachtextIndex, ...otherAttributes }) => ({
         ...otherAttributes,
-        wienerSachtextIndex:
-          wienerSachtextIndex < 4 ? 3 : Math.round(wienerSachtextIndex),
+        wienerSachtextIndex: wienerSachtextIndex < 4 ? 3 : Math.round(wienerSachtextIndex),
       }))
       .reduce((prev, curr) => {
-        prev[prev.findIndex((o) => o.wienerIndex === curr.wienerSachtextIndex)]
-          .count++;
+        prev[prev.findIndex((o) => o.wienerIndex === curr.wienerSachtextIndex)].count++;
         return prev;
       }, array);
   }
 
-  const CustomTooltip = ({
-    active,
-    payload,
-    label,
-  }: TooltipProps<number, string>) => {
+  const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
     if (active && payload && payload.length) {
       return (
         <div

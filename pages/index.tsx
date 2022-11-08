@@ -12,6 +12,8 @@ const Home: NextPage = () => {
       <Head>
         <title></title>
       </Head>
+      <WienerSachtextIndexHistogram />
+      <ReadingTimeHistogram />
     </Stack>
   );
 };

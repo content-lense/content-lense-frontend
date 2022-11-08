@@ -1,43 +1,30 @@
 import { useQuery } from "@tanstack/react-query";
 import { GenericGetItems } from "../../../data/ReactQueries";
 import { ArticleComplexityInterface } from "../../../interfaces/ArticleComplexityInterface";
-import { bin } from "d3-array";
-import {
-  BarChart,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Bar,
-  TooltipProps,
-  ResponsiveContainer,
-} from "recharts";
+import d3Array from "d3-array";
+import { BarChart, XAxis, YAxis, Tooltip, Bar, ResponsiveContainer, TooltipProps } from "recharts";
 import { Props as XAxisProps } from "recharts/types/cartesian/XAxis";
 import { PureComponent } from "react";
 
-interface ReadingTimeHistogramPropsInterface {
-  onClick: (rangeLowerBoundary: number, rangeUpperBoundary: number) => void;
+interface ReadingTimeHistogramProps {
+  onClick?: (rangeLowerBoundary: number, rangeUpperBoundary: number) => void;
 }
 
-export default function ReadingTimeHistogram(
-  props: ReadingTimeHistogramPropsInterface
-) {
-  const { data, isLoading } = useQuery(
-    ["articles-reading-time-in-minutes"],
-    () =>
-      GenericGetItems<ArticleComplexityInterface>("/article_complexities", {
-        queryString: "?part=body&properties[]=readingTimeInMinutes",
-      })
+export default function ReadingTimeHistogram(props: ReadingTimeHistogramProps) {
+  const { data, isLoading } = useQuery(["articles-reading-time-in-minutes"], () =>
+    GenericGetItems<ArticleComplexityInterface>(
+      "/article_complexities?part=body&properties[]=readingTimeInMinutes"
+    )
   );
-  const _bin = bin();
+  const bin = d3Array.bin();
   if (!data || isLoading) {
     return <></>;
   }
-
   function giveHistogramData(data: ArticleComplexityInterface[]) {
     let readingTimes = data.map((date) => {
       return date.readingTimeInMinutes;
     });
-    let binedReadingTimes = _bin(readingTimes);
+    let binedReadingTimes = bin(readingTimes);
     let readingTimeData = binedReadingTimes.map(
       ({ x0: from, x1: to, length: count, ...values }) => {
         return { from, to, count, values: Object.values(values) };
@@ -45,11 +32,7 @@ export default function ReadingTimeHistogram(
     );
     return readingTimeData;
   }
-  const CustomTooltip = ({
-    active,
-    payload,
-    label,
-  }: TooltipProps<number, string>) => {
+  const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
     if (active && payload && payload.length) {
       return (
         <div
@@ -78,18 +61,12 @@ export default function ReadingTimeHistogram(
     }
   ) {
     const { x, y, stroke, payload } = props;
+    console.log(payload, "load");
 
     if (payload && data)
       return (
         <g transform={`translate(${x},${y})`}>
-          <text
-            x={0}
-            y={0}
-            dy={16}
-            textAnchor="end"
-            fill="#666"
-            transform="rotate(-35)"
-          >
+          <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">
             {`${giveHistogramData(data)[payload.value].from} – ${
               giveHistogramData(data)[payload.value].to
             }`}
@@ -123,7 +100,9 @@ export default function ReadingTimeHistogram(
           dataKey={"count"}
           name="Anzahl an Artikeln"
           fill="#8884d8"
-          onClick={(e) => props.onClick(e.from, e.to)}
+          onClick={(e) => {
+            if (props.onClick) props.onClick(e.from, e.to);
+          }}
         />
       </BarChart>
     </ResponsiveContainer>

@@ -40,12 +40,7 @@ const AuthenticatedLayout: FC<AuthenticatedLayoutProps> = (props) => {
       <Toolbar sx={{ cursor: "pointer" }}>
         <Link href="/" passHref>
           <Stack flexDirection="row" gap={1} alignItems="center">
-            <Image
-              layout="fill"
-              objectFit="contain"
-              alt={"Content Lense"}
-              src="/images/logo.png"
-            />
+            <Image layout="fill" objectFit="contain" alt={"Content Lense"} src="/images/logo.png" />
           </Stack>
         </Link>
       </Toolbar>

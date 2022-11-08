@@ -8,11 +8,22 @@ import { WebhookInterface } from "../../interfaces/WebhookInterface";
 import WebhookListItem from "./WebhookListItem";
 
 function WebhookList() {
-    const { data, isLoading } = useQuery(["analysis_microservices"], () => GenericGetItems<WebhookInterface>("/webhooks"));
-    if(isLoading || !data){
-        return <CircularProgress />
-    }
-    return ( <List>{data.map(a => <><WebhookListItem webhook={a} /><Divider /></>)}</List>)
+  const { data, isLoading } = useQuery(["analysis_microservices"], () =>
+    GenericGetItems<WebhookInterface>("/webhooks")
+  );
+  if (isLoading || !data) {
+    return <CircularProgress />;
+  }
+  return (
+    <List>
+      {data.map((a) => (
+        <>
+          <WebhookListItem webhook={a} />
+          <Divider />
+        </>
+      ))}
+    </List>
+  );
 }
 
 export default WebhookList;
