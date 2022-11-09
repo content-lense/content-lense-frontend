@@ -11,12 +11,15 @@ import ArticleComplexityList from "../components/Dashboard/ComplexityHistogram/A
 import { useQuery } from "@tanstack/react-query";
 import { RangeFilterChangedInterface } from "../components/Dashboard/ComplexityHistogram/RangeFilterComponent";
 import { GenericGetItem, GenericGetItems } from "../data/ReactQueries";
-import { ArticleComplexityInterface } from "../interfaces/ArticleComplexityInterface";
+import {
+  ArticleComplexityInterface,
+  ArticleComplexityNumberTypes,
+} from "../interfaces/ArticleComplexityInterface";
 
 const Home: NextPage = () => {
   const CHART_HEIGHT = 300;
   const [queryOptions, setQueryOptions] = useState({});
-  const [filterValues, setFilterValues] = useState({field: "", from: 0, to: 100});
+  const [filterValues, setFilterValues] = useState({ field: "", from: 0, to: 100 });
 
   function onFilterChange(obj: RangeFilterChangedInterface) {
     setQueryOptions({
@@ -30,11 +33,14 @@ const Home: NextPage = () => {
   const { data: articleData, isLoading } = useQuery(["articles", queryOptions], () =>
     GenericGetItems<ArticleComplexityInterface>("/article_complexities", queryOptions)
   );
-  const { data: articleComplexityBoundaries, isLoading: articleComplexityBoundariesLoading } = useQuery(["articleBoundaries"], () =>
-    GenericGetItem<{key: [number, number]}[]>("/article_complexity/boundary")
-  );
-  if(!articleComplexityBoundaries){
-    return <></>
+  const { data: articleComplexityBoundaries, isLoading: articleComplexityBoundariesLoading } =
+    useQuery(["articleBoundaries"], () =>
+      GenericGetItem<{ [key in keyof ArticleComplexityNumberTypes]: [number, number] }>(
+        "/article_complexity/boundary"
+      )
+    );
+  if (!articleComplexityBoundaries) {
+    return <></>;
   }
 
   return (
@@ -44,27 +50,49 @@ const Home: NextPage = () => {
       </Head>
       <Grid container spacing={4}>
         <Grid item xs={12} md={4} sx={{ height: CHART_HEIGHT }}>
-          <WienerSachtextIndexHistogram onClick={(rangeLowerBoundary, rangeUpperBoundary) =>
-              setFilterValues({...filterValues, field: "wienerSachtextIndex", from: rangeLowerBoundary, to: rangeUpperBoundary})
-            }/>
-        </Grid>
-        <Grid item xs={12} md={4} sx={{ height: CHART_HEIGHT }}>
-          <ReadingTimeHistogram
+          <WienerSachtextIndexHistogram
             onClick={(rangeLowerBoundary, rangeUpperBoundary) =>
-              setFilterValues({...filterValues, field: "readingTimeInMinutes", from: rangeLowerBoundary, to: rangeUpperBoundary})
+              setFilterValues({
+                ...filterValues,
+                field: "wienerSachtextIndex",
+                from: rangeLowerBoundary,
+                to: rangeUpperBoundary,
+              })
             }
           />
         </Grid>
         <Grid item xs={12} md={4} sx={{ height: CHART_HEIGHT }}>
-          <WordCountHistogram             onClick={(rangeLowerBoundary, rangeUpperBoundary) =>
-              setFilterValues({...filterValues, field: "totalWords", from: rangeLowerBoundary, to: rangeUpperBoundary})
-            }/>
+          <ReadingTimeHistogram
+            onClick={(rangeLowerBoundary, rangeUpperBoundary) =>
+              setFilterValues({
+                ...filterValues,
+                field: "readingTimeInMinutes",
+                from: rangeLowerBoundary,
+                to: rangeUpperBoundary,
+              })
+            }
+          />
+        </Grid>
+        <Grid item xs={12} md={4} sx={{ height: CHART_HEIGHT }}>
+          <WordCountHistogram
+            onClick={(rangeLowerBoundary, rangeUpperBoundary) =>
+              setFilterValues({
+                ...filterValues,
+                field: "totalWords",
+                from: rangeLowerBoundary,
+                to: rangeUpperBoundary,
+              })
+            }
+          />
         </Grid>
       </Grid>
       <ArticleComplexityList
         articleData={articleData ?? []}
         isLoading={isLoading}
-        onRangeFilterChange={onFilterChange} rangeFilterValues={filterValues} articleComplexityBoundaries={articleComplexityBoundaries??{}}      />
+        onRangeFilterChange={onFilterChange}
+        rangeFilterValues={filterValues}
+        articleComplexityBoundaries={articleComplexityBoundaries ?? {}}
+      />
     </Stack>
   );
 };
