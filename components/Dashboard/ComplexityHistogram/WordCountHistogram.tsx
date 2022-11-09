@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { bin } from "d3-array";
+import { bin as d3Bin } from "d3-array";
 import {
   TooltipProps,
   BarChart,
@@ -13,7 +13,11 @@ import {
 import { GenericGetItems } from "../../../data/ReactQueries";
 import { ArticleComplexityInterface } from "../../../interfaces/ArticleComplexityInterface";
 
-export default function WordCountHistogram() {
+interface WordCountHistogramProps {
+  onClick: (rangeLowerBoundary: number, rangeUpperBoundary: number) => void;
+}
+
+export default function WordCountHistogram(props:WordCountHistogramProps) {
   const { data, isLoading } = useQuery(["articles-body-word-count"], () =>
     GenericGetItems<ArticleComplexityInterface>("/article_complexities", {
       queryString: "?part=body&properties[]=totalWords",
@@ -22,12 +26,12 @@ export default function WordCountHistogram() {
   if (!data || isLoading) {
     return <></>;
   }
-  const _bin = bin();
+  const bin = d3Bin();
   function giveHistogramData(_data: ArticleComplexityInterface[]) {
     let wordCount = _data.map((article) => {
       return article.totalWords;
     });
-    let binedWords = _bin(wordCount);
+    let binedWords = bin(wordCount);
     let wordCountData = binedWords.map(({ x0: from, x1: to, length: count, ...values }) => {
       return { from, to, count, values: Object.values(values) };
     });
@@ -96,7 +100,10 @@ export default function WordCountHistogram() {
           }}
         />
         <Tooltip content={<CustomTooltip />} />
-        <Bar dataKey="count" name="Anzahl an Artikeln" fill="#8884d8" />
+        <Bar dataKey="count" name="Anzahl an Artikeln" fill="#8884d8"           style={{cursor:"pointer"}}
+          onClick={(e) => {
+            if (props.onClick) props.onClick(e.from, e.to);
+          }}/>
       </BarChart>
     </ResponsiveContainer>
   );

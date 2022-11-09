@@ -13,7 +13,9 @@ import RangeFilterComponent, {
 
 interface ArticleComplexityListPropsInterface {
   articleData: ArticleComplexityInterface[];
+  articleComplexityBoundaries: {field: [number, number]}[];
   isLoading: boolean;
+  rangeFilterValues: RangeFilterChangedInterface;
   onRangeFilterChange: (obj: RangeFilterChangedInterface) => void;
 }
 
@@ -23,20 +25,16 @@ export default function ArticleComplexityList(props: ArticleComplexityListPropsI
         return {
           field: column.field,
           label: column.headerName ?? column.field,
-          upperBoundary: Math.max(
-            ...props.articleData.map((article) => article[column.field] as number)
-          ),
-          lowerBoundary: Math.min(
-            ...props.articleData.map((article) => article[column.field] as number)
-          ),
+          upperBoundary: props.articleComplexityBoundaries[column.field][1],
+          lowerBoundary: props.articleComplexityBoundaries[column.field][0],
         };
       })
     : [];
-  console.log(fieldData, "fieldData");
+
   return (
     <>
       <Box sx={{ height: 400, width: "100%" }}>
-        <RangeFilterComponent fields={fieldData} onChange={props.onRangeFilterChange} />
+        <RangeFilterComponent fields={fieldData} onChange={props.onRangeFilterChange} fieldValues={props.rangeFilterValues} />
         <DataGrid
           loading={props.isLoading}
           columns={ArticleComplexityListColumns}

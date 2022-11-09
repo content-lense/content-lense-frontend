@@ -3,7 +3,11 @@ import { TooltipProps, BarChart, XAxis, YAxis, Tooltip, Bar, ResponsiveContainer
 import { GenericGetItems } from "../../../data/ReactQueries";
 import { ArticleComplexityInterface } from "../../../interfaces/ArticleComplexityInterface";
 
-export default function WienerSachtextIndexHistogram() {
+interface WienerSachtextIndexHistogramProps {
+  onClick: (rangeLowerBoundary: number, rangeUpperBoundary: number) => void;
+}
+
+export default function WienerSachtextIndexHistogram(props: WienerSachtextIndexHistogramProps) {
   const { data, isLoading } = useQuery(["articles-body-wiener-sachtext-index"], () =>
     GenericGetItems<ArticleComplexityInterface>("/article_complexities", {
       queryString: "?part=body&properties[]=wienerSachtextIndex",
@@ -71,7 +75,12 @@ export default function WienerSachtextIndexHistogram() {
           }}
         />
         <Tooltip content={<CustomTooltip />} />
-        <Bar dataKey="count" name="Anzahl an Artikeln" fill="#8884d8" />
+        <Bar dataKey="count" name="Anzahl an Artikeln" fill="#8884d8"           
+          style={{cursor:"pointer"}}
+          onClick={(e) => {
+            if (props.onClick) props.onClick(e.wienerIndex<4? data.reduce((prev, curr)=>{return prev.wienerSachtextIndex < curr.wienerSachtextIndex ? prev : curr}).wienerSachtextIndex:e.wienerIndex-0.5, e.wienerIndex+0.49);
+            console.log("fromto", data);
+          }} />
       </BarChart>
     </ResponsiveContainer>
   );
