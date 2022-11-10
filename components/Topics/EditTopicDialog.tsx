@@ -14,12 +14,13 @@ import { useFormik } from "formik";
 import {
   ArticleTopicInterface,
   CreateArticleTopicInterface,
+  UpdateArticleTopicInterface,
 } from "../../interfaces/ArticleTopicInterface";
 import * as yup from "yup";
 import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { GenericGetItems, GenericPostItem } from "../../data/ReactQueries";
+import { GenericGetItems, GenericPostItem, GenericPutItem } from "../../data/ReactQueries";
 import { loginUser } from "../../data/UserData";
 
 interface EditTopicDialogInterface {
@@ -48,10 +49,18 @@ export default function EditTopicDialog(props: EditTopicDialogInterface) {
     },
   });
   const { mutate: updateArticleTopic, isLoading: isUpdating } = useMutation(
-    GenericPostItem<CreateArticleTopicInterface, ArticleTopicInterface>,
+    GenericPutItem<UpdateArticleTopicInterface, ArticleTopicInterface>,
     {
-      onSuccess: (newTopic: ArticleTopicInterface) => {
-        queryClient.setQueryData(["topics"], [...(topics ?? []), newTopic]);
+      onSuccess: (updatedTopic: ArticleTopicInterface) => {
+        if (!topics) return;
+        const _topics = [...topics];
+        _topics.splice(
+          _topics.findIndex((t) => t.id === updatedTopic.id),
+          1,
+          updatedTopic
+        );
+        queryClient.setQueryData(["topics"], _topics);
+        console.log("ON SUCCESS", updatedTopic, topics);
       },
     }
   );
@@ -73,6 +82,13 @@ export default function EditTopicDialog(props: EditTopicDialogInterface) {
       if (!props.topic) {
         const result = await createArticleTopic({
           "@context": "/article_topics",
+          name: values.name,
+          blacklist: values.blacklist.split("\n"),
+          whitelist: values.whitelist.split("\n"),
+        });
+      } else {
+        const result = await updateArticleTopic({
+          ...props.topic,
           name: values.name,
           blacklist: values.blacklist.split("\n"),
           whitelist: values.whitelist.split("\n"),

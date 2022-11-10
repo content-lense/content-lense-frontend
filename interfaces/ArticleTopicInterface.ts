@@ -10,3 +10,9 @@ export interface CreateArticleTopicInterface {
   whitelist: string[];
   blacklist: string[];
 }
+
+export interface UpdateArticleTopicInterface extends ApiPlatformItemResponse{
+  name?: string;
+  whitelist?: string[];
+  blacklist?: string[];
+}

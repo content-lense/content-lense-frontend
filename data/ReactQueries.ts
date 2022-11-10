@@ -2,7 +2,7 @@ import { QueryKey } from "@tanstack/react-query";
 import moment from "moment";
 import { Range } from "react-date-range";
 import { ApiFetch } from "../helpers/ApiFetch";
-import { ApiPlatformResponse } from "../interfaces/ApiPlatformResponseInterface";
+import { ApiPlatformItemResponse, ApiPlatformResponse } from "../interfaces/ApiPlatformResponseInterface";
 import { ArticleInterface } from "../interfaces/ArticleInterface";
 
 export const DefaultQueryFn = async (a: unknown, queryKey: QueryKey) => {
@@ -80,6 +80,23 @@ export const GenericPostItem = async <T extends ApiPlatformContext, U extends un
   const result = (await req.json()) as U;
   return result;
 };
+
+export const GenericPutItem = async <T extends ApiPlatformItemResponse, U extends unknown>(
+  payload: T,
+): Promise<U> => {
+  const req = await ApiFetch(payload["@id"], {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+  if(!req.ok){
+    const result = (await req.json());
+    throw new Error(result["hydra:description"] ?? "Unknown error");
+  }
+  const result = (await req.json()) as U;
+  return result;
+};
+
+
 
 export const CreateDateRangeQueryKeyObj = (dateRange?: Range | null) => {
   if (typeof dateRange == "undefined" || dateRange === null) {
