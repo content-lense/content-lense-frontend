@@ -75,12 +75,23 @@ export default function WienerSachtextIndexHistogram(props: WienerSachtextIndexH
           }}
         />
         <Tooltip content={<CustomTooltip />} />
-        <Bar dataKey="count" name="Anzahl an Artikeln" fill="#8884d8"           
-          style={{cursor:"pointer"}}
+        <Bar
+          dataKey="count"
+          name="Anzahl an Artikeln"
+          fill="#8884d8"
+          style={{ cursor: "pointer" }}
           onClick={(e) => {
-            if (props.onClick) props.onClick(e.wienerIndex<4? data.reduce((prev, curr)=>{return prev.wienerSachtextIndex < curr.wienerSachtextIndex ? prev : curr}).wienerSachtextIndex:e.wienerIndex-0.5, e.wienerIndex+0.49);
-            console.log("fromto", data);
-          }} />
+            if (props.onClick)
+              props.onClick(
+                e.wienerIndex < 4
+                  ? data.reduce((prev, curr) => {
+                      return prev.wienerSachtextIndex < curr.wienerSachtextIndex ? prev : curr;
+                    }).wienerSachtextIndex
+                  : e.wienerIndex - 0.5,
+                e.wienerIndex + 0.49
+              );
+          }}
+        />
       </BarChart>
     </ResponsiveContainer>
   );

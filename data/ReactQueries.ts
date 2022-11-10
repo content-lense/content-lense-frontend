@@ -73,6 +73,10 @@ export const GenericPostItem = async <T extends ApiPlatformContext, U extends un
     method: "POST",
     body: JSON.stringify(payload),
   });
+  if(!req.ok){
+    const result = (await req.json());
+    throw new Error(result["hydra:description"] ?? "Unknown error");
+  }
   const result = (await req.json()) as U;
   return result;
 };

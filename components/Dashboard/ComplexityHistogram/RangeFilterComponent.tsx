@@ -34,8 +34,8 @@ export default function RangeFilter(props: RangeFilterProps) {
   const [maxSliderValue, setMaxSliderValue] = useState(100);
   const [minSliderValue, setMinSliderValue] = useState(0);
 
-  useEffect(()=>{
-    const {upperBoundary, lowerBoundary} = getSliderBoundaries(props.fieldValues.field);
+  useEffect(() => {
+    const { upperBoundary, lowerBoundary } = getSliderBoundaries(props.fieldValues.field);
     setSelectField(props.fieldValues.field);
     setMaxSliderValue(upperBoundary);
     setMinSliderValue(lowerBoundary);
@@ -45,14 +45,16 @@ export default function RangeFilter(props: RangeFilterProps) {
       from: props.fieldValues.from,
       to: props.fieldValues.to,
     });
-    // console.log("sliderValues", minSliderValue, maxSliderValue, "boundaries", getSliderBoundaries(props.fieldValues.field), "props", props.fieldValues)
-  },[props.fieldValues])
+  }, [props.fieldValues]);
 
-  function getSliderBoundaries(field: string){
-    console.log("verdreht", props.fields.find((_field) => _field.field === field))
-    return props.fields.find((_field) => _field.field === field)??{lowerBoundary:0, upperBoundary:100};
+  function getSliderBoundaries(field: string) {
+    return (
+      props.fields.find((_field) => _field.field === field) ?? {
+        lowerBoundary: 0,
+        upperBoundary: 100,
+      }
+    );
   }
-
 
   return (
     <Grid container spacing={4}>
@@ -61,11 +63,10 @@ export default function RangeFilter(props: RangeFilterProps) {
         <Select
           fullWidth
           label="Bitte Filter wählen"
-
           value={selectField}
           onChange={(e) => {
             setSelectField(e.target.value);
-            const {upperBoundary, lowerBoundary} = getSliderBoundaries(e.target.value);
+            const { upperBoundary, lowerBoundary } = getSliderBoundaries(e.target.value);
             setMaxSliderValue(upperBoundary);
             setMinSliderValue(lowerBoundary);
             setSliderValue([lowerBoundary, upperBoundary]);
@@ -74,7 +75,6 @@ export default function RangeFilter(props: RangeFilterProps) {
               from: lowerBoundary,
               to: upperBoundary,
             });
-            console.log("onChangeValues", e.target.value, lowerBoundary, upperBoundary)
           }}
         >
           {FilterItems(props.fields)}

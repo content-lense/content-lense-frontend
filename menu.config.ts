@@ -23,6 +23,12 @@ const MenuConfig: ConfigurableMenuItem[] = [
     group: "default",
     groupI18NKey: "menu.group.default"
   },
+  {titleI18NKey: "menu.topics",
+  route: "/topics",
+  icon: StraightenIcon,
+  group: "default",
+  groupI18NKey: "menu.group.default"
+},
   {
     titleI18NKey: "menu.entities.articles",
     route: "/entities/articles",
