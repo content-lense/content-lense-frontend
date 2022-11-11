@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slider, Stack } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Slider, Stack } from "@mui/material";
 import { NextPage } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import TopicsTable from "../components/Topics/TopicsTable";
@@ -30,7 +30,6 @@ const Topics: NextPage = () => {
     refetchVennData();
   }, [numOfTopics])
 
-
   if (!topics || !vennData) {
     return <></>;
   }
@@ -39,12 +38,14 @@ const Topics: NextPage = () => {
     <>
       <Stack spacing={2}>
         <Slider sx={{ pt: 7 }} valueLabelDisplay="on" defaultValue={6} min={0} max={10} value={numOfTopics} onChange={(e, newValue: number | number[]) => setNumOfTopics(newValue as number)} aria-label="Disabled slider" />
-        <VennDiagram
-          height={450}
-          width={700}
-          data={vennData}
-          series={<VennSeries colorScheme={['#2d60e8']} />}
-        />
+        <Box width={"100%"}>
+          <VennDiagram
+            height={450}
+            data={vennData}
+            series={<VennSeries colorScheme={['#2d60e8']} />}
+          />
+        </Box>
+
         <Button
           startIcon={<AddIcon />}
           variant="outlined"
