@@ -1,7 +1,8 @@
 import { ApiPlatformItemResponse } from "./ApiPlatformResponseInterface";
+import { ArticleInterface } from "./ArticleInterface";
 
-export interface ArticleTopicInterface extends CreateArticleTopicInterface, Omit<ApiPlatformItemResponse,"@context">{
-  
+export interface ArticleTopicInterface extends CreateArticleTopicInterface, Omit<ApiPlatformItemResponse, "@context"> {
+  articles: ArticleInterface[];
 }
 
 export interface CreateArticleTopicInterface {
@@ -11,7 +12,7 @@ export interface CreateArticleTopicInterface {
   blacklist: string[];
 }
 
-export interface UpdateArticleTopicInterface extends ApiPlatformItemResponse{
+export interface UpdateArticleTopicInterface extends ApiPlatformItemResponse {
   name?: string;
   whitelist?: string[];
   blacklist?: string[];

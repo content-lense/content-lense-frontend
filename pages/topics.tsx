@@ -1,5 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slider, Stack } from "@mui/material";
 import { NextPage } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import TopicsTable from "../components/Topics/TopicsTable";
@@ -8,7 +7,9 @@ import EditTopicDialog from "../components/Topics/EditTopicDialog";
 import { useQuery } from "@tanstack/react-query";
 import { GenericGetItems } from "../data/ReactQueries";
 import { ArticleTopicInterface } from "../interfaces/ArticleTopicInterface";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { VennDiagram, VennSeries } from "reaviz";
+import { ApiFetch } from "../helpers/ApiFetch";
 
 const Topics: NextPage = () => {
   const { data: topics, isLoading } = useQuery(["topics"], () =>
@@ -16,13 +17,34 @@ const Topics: NextPage = () => {
   );
   const [isShowingEditTopicDialog, setIsShowingEditTopicDialog] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState<ArticleTopicInterface | undefined>();
-  if (!topics) {
+  const [numOfTopics, setNumOfTopics] = useState<number>(6);
+
+
+  const { data: vennData, isLoading: vennDataLoading, refetch: refetchVennData } = useQuery(["vennData"], () =>
+    ApiFetch(`/article_topics_venn?limit=${numOfTopics}`).then((req) => {
+      return req.json();
+    })
+  );
+
+  useEffect(() => {
+    refetchVennData();
+  }, [numOfTopics])
+
+
+  if (!topics || !vennData) {
     return <></>;
   }
 
   return (
     <>
       <Stack spacing={2}>
+        <Slider sx={{ pt: 7 }} valueLabelDisplay="on" defaultValue={6} min={0} max={10} value={numOfTopics} onChange={(e, newValue: number | number[]) => setNumOfTopics(newValue as number)} aria-label="Disabled slider" />
+        <VennDiagram
+          height={450}
+          width={700}
+          data={vennData}
+          series={<VennSeries colorScheme={['#2d60e8']} />}
+        />
         <Button
           startIcon={<AddIcon />}
           variant="outlined"
