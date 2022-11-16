@@ -9,7 +9,7 @@ export const ApiFetch = (req: any, options?: any): Promise<Response> => {
       headers["X-Switch-User"] = imp;
     }
   }
-
+  
   return fetch(req, {
     ...options,
     credentials: "include",

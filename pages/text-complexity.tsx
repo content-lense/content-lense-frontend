@@ -16,7 +16,7 @@ import {
   ArticleComplexityNumberTypes,
 } from "../interfaces/ArticleComplexityInterface";
 
-const Home: NextPage = () => {
+const TextComplexity: NextPage = () => {
   const CHART_HEIGHT = 300;
   const [queryOptions, setQueryOptions] = useState({});
   const [filterValues, setFilterValues] = useState({ field: "", from: 0, to: 100 });
@@ -105,4 +105,4 @@ export async function getStaticProps({ locale }: { locale: string }) {
   };
 }
 
-export default Home;
+export default TextComplexity;
