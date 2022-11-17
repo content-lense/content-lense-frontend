@@ -15,7 +15,7 @@ function ArticleList() {
     <List>
       {data.map((a) => (
         <>
-          <ArticleListItem article={a} />
+          <ArticleListItem article={a} showTextComplexityChips />
           <Divider />
         </>
       ))}

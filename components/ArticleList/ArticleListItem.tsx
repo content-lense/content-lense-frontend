@@ -19,8 +19,13 @@ import SpellcheckIcon from "@mui/icons-material/Spellcheck";
 import StraightenIcon from "@mui/icons-material/Straighten";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
-function ArticleListItem(props: { article: ArticleInterface }) {
+interface ArticleListItemProps {
+  article: ArticleInterface;
+  showTextComplexityChips?: boolean;
+}
+function ArticleListItem(props: ArticleListItemProps) {
   const { article: a } = props;
+  const showTextComplexityChips = props.showTextComplexityChips ?? false;
   const router = useRouter();
   return (
     <ListItemButton onClick={() => router.push(`${router.pathname}/${props.article.id}`)}>
@@ -47,7 +52,7 @@ function ArticleListItem(props: { article: ArticleInterface }) {
           </React.Fragment>
         }
       />
-      {a.complexities && (
+      {showTextComplexityChips && a.complexities && (
         <Stack direction="row" spacing={1}>
           {a.complexities.find((complex) => complex.part === "body")?.readingTimeInMinutes && (
             <Tooltip title="Reading Time in minutes">
@@ -71,7 +76,7 @@ function ArticleListItem(props: { article: ArticleInterface }) {
             </Tooltip>
           )}
           {a.complexities.find((complex) => complex.part === "body")?.wienerSachtextIndex && (
-            <Tooltip title="Wiender Sachtext Index">
+            <Tooltip title="Wiener Sachtext Index">
               <Chip
                 icon={<SpellcheckIcon fontSize="small" />}
                 label={

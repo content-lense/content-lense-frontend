@@ -14,6 +14,7 @@ specifiers:
   '@types/d3-array': ^3.0.3
   '@types/node': 18.7.18
   '@types/react': 18.0.20
+  '@types/react-date-range': ^1.4.4
   '@types/react-dom': 18.0.6
   '@types/react-highlight': ^0.12.5
   '@typescript-eslint/eslint-plugin': ^5.0.0
@@ -55,6 +56,7 @@ dependencies:
   '@mui/x-data-grid': 5.17.9_x7vtq4go3jz4nx6ojd6lju2rf4
   '@tanstack/react-query': 4.10.3_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-query-devtools': 4.14.5_vhepussragssjkevgznguhxexq
+  '@types/react-date-range': 1.4.4
   '@types/react-highlight': 0.12.5
   d3-array: 3.2.0
   formik: 2.2.9_react@18.2.0
@@ -1093,6 +1095,13 @@ packages:
 
   /@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
+
+  /@types/react-date-range/1.4.4:
+    resolution: {integrity: sha512-9Y9NyNgaCsEVN/+O4HKuxzPbVjRVBGdOKRxMDcsTRWVG62lpYgnxefNckTXDWup8FvczoqPW0+ESZR6R1yymDg==}
+    dependencies:
+      '@types/react': 18.0.20
+      date-fns: 2.29.3
+    dev: false
 
   /@types/react-dom/18.0.6:
     resolution: {integrity: sha512-/5OFZgfIPSwy+YuIBP/FgJnQnsxhZhjjrnxudMddeblOouIodEQ75X14Rr4wGSG/bknL+Omy9iWlLo1u/9GzAA==}

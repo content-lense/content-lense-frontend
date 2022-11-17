@@ -31,6 +31,7 @@
     "@mui/x-data-grid": "^5.17.9",
     "@tanstack/react-query": "^4.10.3",
     "@tanstack/react-query-devtools": "^4.14.5",
+    "@types/react-date-range": "^1.4.4",
     "@types/react-highlight": "^0.12.5",
     "d3-array": "^3.2.0",
     "formik": "^2.2.9",
