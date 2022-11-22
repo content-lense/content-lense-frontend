@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Box, Divider, Grid, List } from "@mui/material";
+import { Box, Card, CardContent, CardHeader, Chip, Divider, Grid, List, Stack, Typography, TypographyProps } from "@mui/material";
 import React, { PureComponent, useEffect, useState } from "react";
 import { DashboardKpiCard } from "../components/Dashboard/Startpage/DashboardKpiCard";
 import { useQuery } from "@tanstack/react-query";
@@ -12,6 +12,13 @@ import { ApipOrder } from "../helpers/ApiPlatform/apip-order-filter";
 import { ApiPlatformResponse } from "../interfaces/ApiPlatformResponseInterface";
 import DashboardCard from "../components/Dashboard/Startpage/DashboardCard";
 import ArticleListItem from "../components/ArticleList/ArticleListItem";
+import { MessageInterface } from "../interfaces/MessageInterface";
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { ApiFetch } from "../helpers/ApiFetch";
+import EntityWrapper from "../components/generator/EntityWrapper";
+import { AnalysisMicroserviceInterface } from "../interfaces/AnalysisMicroserviceInterface";
+import moment from "moment";
 
 const Home: NextPage = () => {
   const now = new Date();
@@ -35,8 +42,14 @@ const Home: NextPage = () => {
     return GenericGetItemsAsHydra<ArticleInterface>("/articles", filterEncoder);
   });
 
+  const { data: messages, isLoading: messagesLoading } = useQuery(
+    ["messages"],
+    () => GenericGetItems<MessageInterface>("/messenger_messages"),
+  )
+
+
   if (!articlesLastThirtyDays || !tenLastAddedArticles) return <></>;
-  console.log(tenLastAddedArticles, "ten");
+
   return (
     <Grid container spacing={4}>
       <Grid item xs={12} md={4}>
@@ -60,6 +73,54 @@ const Home: NextPage = () => {
                 <Divider />
               </>
             ))}
+          </List>
+        </DashboardCard>
+      </Grid>
+      {/* messenger stats */}
+      <Grid item xs={20} md={100}>
+        <DashboardCard
+          title="Zuletzt hinzugefügte Messages"
+          isScrollable={true}
+          scrollElementHeight={500}
+        >
+          <List>
+            {messages?.map((message) => {
+              return (<>
+                <Card>
+                  <CardHeader
+                    title={
+                      <EntityWrapper<ArticleInterface> path={"articles"} id={message.body["articleId"]} properties={["title"]}>
+                        {(item) => (
+                          <Typography variant="h6">
+                            {item.title}
+                          </Typography>
+                        )}
+                      </EntityWrapper>
+                    }
+                    subheader={<Stack direction="row" spacing={2}>
+                      <Chip size="small" label={moment(message.availableAt).format("DD.MM.yyyy HH:mm")} />
+                      <Chip size="small" label={moment(message.createdAt).format("DD.MM.yyyy HH:mm")} />
+                      <Chip size="small" label={moment(message.deliveredAt).format("DD.MM.yyyy HH:mm")} />
+                    </Stack>}
+                    action={<Chip icon={message.queueName === "failed" ? <CancelIcon /> : <CheckCircleIcon />} size="small" color={message.queueName === "failed" ? "error" : "success"} label={message.queueName} />
+                    }
+                  >
+                  </CardHeader>
+                  <CardContent>
+                    <Stack direction="column">
+                      <EntityWrapper<AnalysisMicroserviceInterface> path={"analysis_microservices"} id={message.body["analysisMicroserviceId"]} properties={["title"]}>
+                        {(item) => (
+                          <Typography variant="body1">
+                            {item.name}
+                          </Typography>
+                        )}
+                      </EntityWrapper>
+                    </Stack>
+                  </CardContent>
+                </Card>
+                <Divider />
+              </>)
+            })}
           </List>
         </DashboardCard>
       </Grid>

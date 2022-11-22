@@ -28,7 +28,7 @@ export const GenericGetItemsAsHydra = async <T extends unknown>(
   filterEncoder?: ApipFilterEncoder
 ) => {
   const req = await ApiFetch(
-    entity + (filterEncoder ? "?"+filterEncoder.encode() : "")
+    entity + (filterEncoder ? "?" + filterEncoder.encode() : "")
   );
   let payload = (await req.json()) as ApiPlatformResponse<T>;
   payload["hydra:member"] = parseDateObjects(payload["hydra:member"]);
@@ -41,7 +41,7 @@ export const GenericGetItems = async <T extends unknown>(
 ) => {
   console.log("Encoder", filterEncoder);
   const req = await ApiFetch(
-    entity + (filterEncoder ? "?"+filterEncoder.encode() : "")
+    entity + (filterEncoder ? "?" + filterEncoder.encode() : "")
   );
   const payload = (await req.json()) as ApiPlatformResponse<T>;
   let elements = payload["hydra:member"];
@@ -49,8 +49,8 @@ export const GenericGetItems = async <T extends unknown>(
   return elements;
 };
 
-const parseDateObjects = (elements:any) => {
-  return elements.map((e:any) => {
+const parseDateObjects = (elements: any) => {
+  return elements.map((e: any) => {
     if (e.createdAt) e.createdAt = new Date(e.createdAt);
     if (e.updatedAt) e.updatedAt = new Date(e.updatedAt);
     if (e.publishedAt) e.publishedAt = new Date(e.publishedAt);
@@ -81,7 +81,7 @@ export const GenericPostItem = async <T extends ApiPlatformContext, U extends un
     method: "POST",
     body: JSON.stringify(payload),
   });
-  if(!req.ok){
+  if (!req.ok) {
     const result = (await req.json());
     throw new Error(result["hydra:description"] ?? "Unknown error");
   }
@@ -96,7 +96,7 @@ export const GenericPutItem = async <T extends ApiPlatformItemResponse, U extend
     method: "PUT",
     body: JSON.stringify(payload),
   });
-  if(!req.ok){
+  if (!req.ok) {
     const result = (await req.json());
     throw new Error(result["hydra:description"] ?? "Unknown error");
   }
