@@ -15,5 +15,6 @@ const nextConfig = {
 };
 
 const { i18n } = require("./next-i18next.config");
+const withTM = require('next-transpile-modules')(['reaviz']);
 
-module.exports = { ...nextConfig, i18n };
+module.exports = withTM({ ...nextConfig, i18n });

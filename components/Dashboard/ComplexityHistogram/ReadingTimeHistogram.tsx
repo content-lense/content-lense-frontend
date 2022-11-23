@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { GenericGetItems } from "../../../data/ReactQueries";
 import { ArticleComplexityInterface } from "../../../interfaces/ArticleComplexityInterface";
-import d3Array from "d3-array";
+import { bin as d3Bin } from "d3-array";
 import { BarChart, XAxis, YAxis, Tooltip, Bar, ResponsiveContainer, TooltipProps } from "recharts";
 import { Props as XAxisProps } from "recharts/types/cartesian/XAxis";
 import { PureComponent } from "react";
 
 interface ReadingTimeHistogramProps {
-  onClick?: (rangeLowerBoundary: number, rangeUpperBoundary: number) => void;
+  onClick: (rangeLowerBoundary: number, rangeUpperBoundary: number) => void;
 }
 
 export default function ReadingTimeHistogram(props: ReadingTimeHistogramProps) {
@@ -16,7 +16,7 @@ export default function ReadingTimeHistogram(props: ReadingTimeHistogramProps) {
       "/article_complexities?part=body&properties[]=readingTimeInMinutes"
     )
   );
-  const bin = d3Array.bin();
+  const bin = d3Bin();
   if (!data || isLoading) {
     return <></>;
   }
@@ -61,7 +61,6 @@ export default function ReadingTimeHistogram(props: ReadingTimeHistogramProps) {
     }
   ) {
     const { x, y, stroke, payload } = props;
-    console.log(payload, "load");
 
     if (payload && data)
       return (
@@ -100,6 +99,7 @@ export default function ReadingTimeHistogram(props: ReadingTimeHistogramProps) {
           dataKey={"count"}
           name="Anzahl an Artikeln"
           fill="#8884d8"
+          style={{ cursor: "pointer" }}
           onClick={(e) => {
             if (props.onClick) props.onClick(e.from, e.to);
           }}

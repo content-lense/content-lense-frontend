@@ -1,0 +1,30 @@
+{
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/wordpress-test-site": true
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "**/vendor/*/**": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.alwaysShowStatus": true,
+  "editor.formatOnSave": true,
+  "eslint.validate": [
+    "vue",
+    "html",
+    "javascript",
+    "typescript",
+    "javascriptreact",
+    "react",
+    "typescriptreact"
+  ],
+  "eslint.workingDirectories": ["./pwa", "./editor"]
+}

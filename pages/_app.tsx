@@ -14,6 +14,7 @@ import { NextPage } from "next";
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DefaultQueryFn } from "../data/ReactQueries";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: any) => any;
@@ -84,6 +85,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
           }}
         >
           <QueryClientProvider client={queryClient}>
+            <ReactQueryDevtools initialIsOpen={false} />
             {Component.getLayout &&
               /*
               // @ts-ignore */

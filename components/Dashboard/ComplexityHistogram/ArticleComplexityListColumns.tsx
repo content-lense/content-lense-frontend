@@ -1,7 +1,14 @@
 import { GridColDef, GridValueFormatterParams } from "@mui/x-data-grid";
-import { ArticleComplexityInterface } from "../../../interfaces/ArticleComplexityInterface";
+import {
+  ArticleComplexityInterface,
+  ArticleComplexityNumberTypes,
+} from "../../../interfaces/ArticleComplexityInterface";
 
-interface RestrictedGridColDef extends Omit<GridColDef, "field"> {
+export interface NumberGridColDef extends Omit<GridColDef, "field"> {
+  field: keyof ArticleComplexityNumberTypes;
+}
+
+export interface RestrictedGridColDef extends Omit<GridColDef, "field"> {
   field: keyof ArticleComplexityInterface;
 }
 
@@ -66,3 +73,7 @@ export const ArticleComplexityListColumns: RestrictedGridColDef[] = [
     editable: false,
   },
 ];
+
+export const ArticleComplexityListColumnsOfTypeNumber = ArticleComplexityListColumns.filter(
+  (column) => column.type === "number"
+) as NumberGridColDef[];

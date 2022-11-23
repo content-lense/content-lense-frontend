@@ -1,46 +1,45 @@
 import { Box } from "@mui/material";
-import { DataGrid, GridColDef, GridFilterModel, GridToolbar } from "@mui/x-data-grid";
-import { useQuery } from "@tanstack/react-query";
-import { useCallback, useEffect, useState } from "react";
-import { filterProps } from "recharts/types/util/types";
-import { GenericGetItems } from "../../../data/ReactQueries";
-import { ArticleComplexityInterface } from "../../../interfaces/ArticleComplexityInterface";
-import { ArticleComplexityListColumns } from "./ArticleComplexityListColumns";
-import RangeFilterComponent, {
-  RangeFilterChangedInterface,
-  RangeFilterFieldProps,
-} from "./RangeFilterComponent";
+import { ArticleComplexityNumberTypes } from "../../../interfaces/ArticleComplexityInterface";
+import DataGridTable, { DataGridTablePropsInterface } from "../../DataGridTable";
+import { ArticleComplexityListColumnsOfTypeNumber } from "./ArticleComplexityListColumns";
+import RangeFilterComponent, { RangeFilterChangedInterface } from "./RangeFilterComponent";
 
-interface ArticleComplexityListPropsInterface {
-  articleData: ArticleComplexityInterface[];
-  isLoading: boolean;
+interface ArticleComplexityListPropsInterface extends DataGridTablePropsInterface {
+  articleComplexityBoundaries: { [key in keyof ArticleComplexityNumberTypes]: [number, number] };
+  rangeFilterValues: RangeFilterChangedInterface;
   onRangeFilterChange: (obj: RangeFilterChangedInterface) => void;
 }
 
 export default function ArticleComplexityList(props: ArticleComplexityListPropsInterface) {
-  const fieldData = props.articleData
-    ? ArticleComplexityListColumns.filter((column) => column.type === "number").map((column) => {
+  const fieldData = props.rows
+    ? ArticleComplexityListColumnsOfTypeNumber.map((column) => {
         return {
           field: column.field,
           label: column.headerName ?? column.field,
-          upperBoundary: Math.max(
-            ...props.articleData.map((article) => article[column.field] as number)
-          ),
-          lowerBoundary: Math.min(
-            ...props.articleData.map((article) => article[column.field] as number)
-          ),
+          upperBoundary: props.articleComplexityBoundaries[column.field][1],
+          lowerBoundary: props.articleComplexityBoundaries[column.field][0],
         };
       })
     : [];
-  console.log(fieldData, "fieldData");
+
   return (
     <>
       <Box sx={{ height: 400, width: "100%" }}>
-        <RangeFilterComponent fields={fieldData} onChange={props.onRangeFilterChange} />
-        <DataGrid
-          loading={props.isLoading}
-          columns={ArticleComplexityListColumns}
-          rows={props.articleData ?? []}
+        <RangeFilterComponent
+          fields={fieldData}
+          onChange={props.onRangeFilterChange}
+          fieldValues={props.rangeFilterValues}
+        />
+        <DataGridTable
+          rows={props.rows}
+          isLoading={props.isLoading}
+          pageSize={props.pageSize}
+          page={props.page}
+          rowCount={props.rowCount}
+          onPageChange={props.onPageChange}
+          onPageSizeChange={props.onPageSizeChange}
+          handleSorting={props.handleSorting}
+          columns={props.columns}
         />
       </Box>
     </>
