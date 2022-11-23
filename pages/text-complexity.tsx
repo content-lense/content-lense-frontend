@@ -6,7 +6,7 @@ import React, { PureComponent, useEffect, useState } from "react";
 import WienerSachtextIndexHistogram from "../components/Dashboard/ComplexityHistogram/WienerSachtextIndexHistogram";
 import ReadingTimeHistogram from "../components/Dashboard/ComplexityHistogram/ReadingTimeHistogram";
 import WordCountHistogram from "../components/Dashboard/ComplexityHistogram/WordCountHistogram";
-import { GridSortItem, GridSortModel } from "@mui/x-data-grid";
+import { GridSortDirection, GridSortItem, GridSortModel } from "@mui/x-data-grid";
 import ArticleComplexityList from "../components/Dashboard/ComplexityHistogram/ArticleComplexityList";
 import { useQuery } from "@tanstack/react-query";
 import { RangeFilterChangedInterface } from "../components/Dashboard/ComplexityHistogram/RangeFilterComponent";
@@ -17,6 +17,7 @@ import {
 } from "../interfaces/ArticleComplexityInterface";
 import { ApipFilterEncoder } from "../helpers/ApiPlatform/apip-filter-encoder";
 import { ArticleComplexityListColumns } from "../components/Dashboard/ComplexityHistogram/ArticleComplexityListColumns";
+import { ApipOrder } from "../helpers/ApiPlatform/apip-order-filter";
 
 const TextComplexity: NextPage = () => {
   const CHART_HEIGHT = 300;
@@ -40,7 +41,7 @@ const TextComplexity: NextPage = () => {
         .addPageFilter({ itemsPerPage: pageSize, page: page + 1 })
         .addOrderFilter(
           sortModel[0] ? sortModel[0].field : "",
-          sortModel[0] ? sortModel[0].sort : undefined
+          sortModel[0] ? (sortModel[0].sort as ApipOrder) : undefined
         );
       return GenericGetItemsAsHydra<ArticleComplexityInterface>(
         "/article_complexities",
@@ -119,11 +120,9 @@ const TextComplexity: NextPage = () => {
         page={page}
         rowCount={totalRowCount}
         handleSorting={(sortModel) => {
-          console.log(sortModel, "sortModel");
           sortModel[0] && sortModel[0].field != "article"
             ? setSortModel(sortModel)
             : sortModel[0] && setSortModel([{ field: "article.title", sort: sortModel[0].sort }]);
-          console.log(sortModel, "sortModel");
           setPage(0);
         }}
         columns={ArticleComplexityListColumns}

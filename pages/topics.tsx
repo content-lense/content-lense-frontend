@@ -22,6 +22,7 @@ import { VennDiagram, VennSeries } from "reaviz";
 import { ApiFetch } from "../helpers/ApiFetch";
 import { GridSortItem, GridSortModel } from "@mui/x-data-grid";
 import { ApipFilterEncoder } from "../helpers/ApiPlatform/apip-filter-encoder";
+import { ApipOrder } from "../helpers/ApiPlatform/apip-order-filter";
 
 const Topics: NextPage = () => {
   const [filterValue, setFilterValue] = useState({ field: "", from: 0, to: 100 });
@@ -37,8 +38,8 @@ const Topics: NextPage = () => {
         .addRangeFilter(filterValue.field, { min: filterValue.from, max: filterValue.to })
         .addPageFilter({ itemsPerPage: pageSize, page: page + 1 })
         .addOrderFilter(
-          sortModel[0] ? sortModel[0].field : "",
-          sortModel[0] ? sortModel[0].sort : undefined
+          sortModel?.[0].field ?? "",
+          sortModel[0] ? (sortModel[0].sort as ApipOrder) : undefined
         );
       return GenericGetItemsAsHydra<ArticleTopicInterface>("/article_topics", filterEncoder);
     },
