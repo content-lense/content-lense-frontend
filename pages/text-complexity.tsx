@@ -6,7 +6,7 @@ import React, { PureComponent, useEffect, useState } from "react";
 import WienerSachtextIndexHistogram from "../components/Dashboard/ComplexityHistogram/WienerSachtextIndexHistogram";
 import ReadingTimeHistogram from "../components/Dashboard/ComplexityHistogram/ReadingTimeHistogram";
 import WordCountHistogram from "../components/Dashboard/ComplexityHistogram/WordCountHistogram";
-import { DataGrid } from "@mui/x-data-grid";
+import { GridSortDirection, GridSortItem, GridSortModel } from "@mui/x-data-grid";
 import ArticleComplexityList from "../components/Dashboard/ComplexityHistogram/ArticleComplexityList";
 import { useQuery } from "@tanstack/react-query";
 import { RangeFilterChangedInterface } from "../components/Dashboard/ComplexityHistogram/RangeFilterComponent";
@@ -16,6 +16,8 @@ import {
   ArticleComplexityNumberTypes,
 } from "../interfaces/ArticleComplexityInterface";
 import { ApipFilterEncoder } from "../helpers/ApiPlatform/apip-filter-encoder";
+import { ArticleComplexityListColumns } from "../components/Dashboard/ComplexityHistogram/ArticleComplexityListColumns";
+import { ApipOrder } from "../helpers/ApiPlatform/apip-order-filter";
 
 const TextComplexity: NextPage = () => {
   const CHART_HEIGHT = 300;
@@ -24,7 +26,7 @@ const TextComplexity: NextPage = () => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(25);
   const [totalRowCount, setTotalRowCount] = useState(0);
-  const [sortModel, setSortModel] = useState([{ field: "", sort: "" }]);
+  const [sortModel, setSortModel] = useState<GridSortItem[]>([{ field: "", sort: undefined }]);
 
   function onFilterChange(obj: RangeFilterChangedInterface) {
     setFilterValue(obj);
@@ -39,7 +41,7 @@ const TextComplexity: NextPage = () => {
         .addPageFilter({ itemsPerPage: pageSize, page: page + 1 })
         .addOrderFilter(
           sortModel[0] ? sortModel[0].field : "",
-          sortModel[0] ? sortModel[0].sort : ""
+          sortModel[0] ? (sortModel[0].sort as ApipOrder) : undefined
         );
       return GenericGetItemsAsHydra<ArticleComplexityInterface>(
         "/article_complexities",
@@ -104,7 +106,7 @@ const TextComplexity: NextPage = () => {
         </Grid>
       </Grid>
       <ArticleComplexityList
-        articleData={articleData ? articleData["hydra:member"] ?? [] : []}
+        rows={articleData ? articleData["hydra:member"] ?? [] : []}
         isLoading={isLoading}
         onRangeFilterChange={onFilterChange}
         rangeFilterValues={filterBoundaries}
@@ -118,10 +120,12 @@ const TextComplexity: NextPage = () => {
         page={page}
         rowCount={totalRowCount}
         handleSorting={(sortModel) => {
-          setSortModel(sortModel);
-          console.log(sortModel, "sortModel");
+          sortModel[0] && sortModel[0].field != "article"
+            ? setSortModel(sortModel)
+            : sortModel[0] && setSortModel([{ field: "article.title", sort: sortModel[0].sort }]);
           setPage(0);
         }}
+        columns={ArticleComplexityListColumns}
       />
     </Stack>
   );

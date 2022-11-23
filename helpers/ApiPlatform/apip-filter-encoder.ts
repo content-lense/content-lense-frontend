@@ -39,7 +39,7 @@ export class ApipFilterEncoder {
         return this;
     }
 
-    addOrderFilter<T>(key: string, order?: ApipOrder) {
+    addOrderFilter<T>(key: string, order?: ApipOrder | null | undefined) {
         if (order) {
             this.add(new ApipOrderFilter({ key, order }));
         }
