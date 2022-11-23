@@ -40,11 +40,11 @@ FROM node:${NODE_VERSION}-alpine as prod
 WORKDIR /app
 
 
-COPY --from=build /usr/src/pwa/public ./public
-#COPY --from=build /usr/src/pwa/package.json ./package.json
+COPY --from=build /app/public ./public
+COPY --from=build /app/package.json ./package.json
 
-COPY --from=build --chown=node:node /usr/src/pwa/.next/standalone ./
-COPY --from=build --chown=node:node /usr/src/pwa/.next/static ./.next/static
+COPY --from=build --chown=node:node /app/.next/standalone ./
+COPY --from=build --chown=node:node /app/.next/static ./.next/static
 
 EXPOSE 3000
 
