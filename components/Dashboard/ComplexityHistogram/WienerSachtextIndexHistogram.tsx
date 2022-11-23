@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { TooltipProps, BarChart, XAxis, YAxis, Tooltip, Bar, ResponsiveContainer } from "recharts";
 import { GenericGetItems } from "../../../data/ReactQueries";
+import { ApipFilterEncoder } from "../../../helpers/ApiPlatform/apip-filter-encoder";
 import { ArticleComplexityInterface } from "../../../interfaces/ArticleComplexityInterface";
 
 interface WienerSachtextIndexHistogramProps {
@@ -8,11 +9,13 @@ interface WienerSachtextIndexHistogramProps {
 }
 
 export default function WienerSachtextIndexHistogram(props: WienerSachtextIndexHistogramProps) {
-  const { data, isLoading } = useQuery(["articles-body-wiener-sachtext-index"], () =>
-    GenericGetItems<ArticleComplexityInterface>("/article_complexities", {
-      queryString: "?part=body&properties[]=wienerSachtextIndex",
-    })
-  );
+  const { data, isLoading } = useQuery(["articles-body-wiener-sachtext-index"], () => {
+    const filterEncoder = new ApipFilterEncoder();
+    filterEncoder
+      .addSingleValueFilter("part", "body")
+      .addArrayFilter("properties", ["wienerSachtextIndex"]);
+    return GenericGetItems<ArticleComplexityInterface>("/article_complexities", filterEncoder);
+  });
   if (!data || isLoading) {
     return <></>;
   }

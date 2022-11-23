@@ -23,7 +23,13 @@ interface ArticleComplexityListPropsInterface {
   articleComplexityBoundaries: { [key in keyof ArticleComplexityNumberTypes]: [number, number] };
   isLoading: boolean;
   rangeFilterValues: RangeFilterChangedInterface;
+  pageSize: number;
+  page: number;
+  rowCount: number;
   onRangeFilterChange: (obj: RangeFilterChangedInterface) => void;
+  onPageChange: (page: number) => void;
+  onPageSizeChange: (pageSize: number) => void;
+  handleSorting: (sortModel: object[]) => void;
 }
 
 export default function ArticleComplexityList(props: ArticleComplexityListPropsInterface) {
@@ -50,6 +56,24 @@ export default function ArticleComplexityList(props: ArticleComplexityListPropsI
           loading={props.isLoading}
           columns={ArticleComplexityListColumns}
           rows={props.articleData ?? []}
+          paginationMode="server"
+          pagination
+          page={props.page}
+          onPageSizeChange={props.onPageSizeChange}
+          onPageChange={props.onPageChange}
+          pageSize={props.pageSize}
+          rowCount={props.rowCount}
+          sortingMode="server"
+          onSortModelChange={(sortModel) => {
+            if (sortModel[0] && sortModel[0].field === "article") {
+              const newSortModel = sortModel.map((m) => {
+                return { ...m, field: "article.title" };
+              });
+              props.handleSorting(newSortModel);
+            } else {
+              props.handleSorting(sortModel);
+            }
+          }}
         />
       </Box>
     </>

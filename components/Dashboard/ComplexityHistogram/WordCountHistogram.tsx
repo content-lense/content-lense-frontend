@@ -11,18 +11,19 @@ import {
   XAxisProps,
 } from "recharts";
 import { GenericGetItems } from "../../../data/ReactQueries";
+import { ApipFilterEncoder } from "../../../helpers/ApiPlatform/apip-filter-encoder";
 import { ArticleComplexityInterface } from "../../../interfaces/ArticleComplexityInterface";
 
 interface WordCountHistogramProps {
   onClick: (rangeLowerBoundary: number, rangeUpperBoundary: number) => void;
 }
 
-export default function WordCountHistogram(props:WordCountHistogramProps) {
-  const { data, isLoading } = useQuery(["articles-body-word-count"], () =>
-    GenericGetItems<ArticleComplexityInterface>("/article_complexities", {
-      queryString: "?part=body&properties[]=totalWords",
-    })
-  );
+export default function WordCountHistogram(props: WordCountHistogramProps) {
+  const { data, isLoading } = useQuery(["articles-body-word-count"], () => {
+    const filterEncoder = new ApipFilterEncoder();
+    filterEncoder.addSingleValueFilter("part", "body").addArrayFilter("properties", ["totalWords"]);
+    return GenericGetItems<ArticleComplexityInterface>("/article_complexities", filterEncoder);
+  });
   if (!data || isLoading) {
     return <></>;
   }
@@ -100,10 +101,15 @@ export default function WordCountHistogram(props:WordCountHistogramProps) {
           }}
         />
         <Tooltip content={<CustomTooltip />} />
-        <Bar dataKey="count" name="Anzahl an Artikeln" fill="#8884d8"           style={{cursor:"pointer"}}
+        <Bar
+          dataKey="count"
+          name="Anzahl an Artikeln"
+          fill="#8884d8"
+          style={{ cursor: "pointer" }}
           onClick={(e) => {
             if (props.onClick) props.onClick(e.from, e.to);
-          }}/>
+          }}
+        />
       </BarChart>
     </ResponsiveContainer>
   );

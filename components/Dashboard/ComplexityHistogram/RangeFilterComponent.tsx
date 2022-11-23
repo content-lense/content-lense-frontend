@@ -47,6 +47,14 @@ export default function RangeFilter(props: RangeFilterProps) {
     });
   }, [props.fieldValues]);
 
+  useEffect(() => {
+    props.onChange({
+      field: selectField,
+      from: sliderValue[0],
+      to: sliderValue[1],
+    });
+  }, [sliderValue]);
+
   function getSliderBoundaries(field: string) {
     return (
       props.fields.find((_field) => _field.field === field) ?? {
@@ -55,30 +63,33 @@ export default function RangeFilter(props: RangeFilterProps) {
       }
     );
   }
-
+  console.log(sliderValue, "sliderVal");
   return (
     <Grid container spacing={4}>
       <Grid item xs={12} md={6}>
-        <InputLabel></InputLabel>
-        <Select
-          fullWidth
-          label="Bitte Filter wählen"
-          value={selectField}
-          onChange={(e) => {
-            setSelectField(e.target.value);
-            const { upperBoundary, lowerBoundary } = getSliderBoundaries(e.target.value);
-            setMaxSliderValue(upperBoundary);
-            setMinSliderValue(lowerBoundary);
-            setSliderValue([lowerBoundary, upperBoundary]);
-            props.onChange({
-              field: e.target.value,
-              from: lowerBoundary,
-              to: upperBoundary,
-            });
-          }}
-        >
-          {FilterItems(props.fields)}
-        </Select>
+        <FormControl fullWidth>
+          <InputLabel id="filterSelectLabel">Bitte Filter wählen</InputLabel>
+          <Select
+            id="filterSelect"
+            labelId="filterSelectLabel"
+            label="Bitte Filter wählen"
+            value={selectField}
+            onChange={(e) => {
+              setSelectField(e.target.value);
+              const { upperBoundary, lowerBoundary } = getSliderBoundaries(e.target.value);
+              setMaxSliderValue(upperBoundary);
+              setMinSliderValue(lowerBoundary);
+              setSliderValue([lowerBoundary, upperBoundary]);
+              props.onChange({
+                field: e.target.value,
+                from: lowerBoundary,
+                to: upperBoundary,
+              });
+            }}
+          >
+            {FilterItems(props.fields)}
+          </Select>
+        </FormControl>
       </Grid>
       <Grid item xs={12} md={6}>
         <Stack sx={{ height: "100%" }} justifyContent="center">
@@ -87,11 +98,6 @@ export default function RangeFilter(props: RangeFilterProps) {
             max={maxSliderValue}
             onChange={(e, value) => {
               setSliderValue(value as number[]);
-              props.onChange({
-                field: selectField,
-                from: sliderValue[0],
-                to: sliderValue[1],
-              });
             }}
             value={sliderValue}
             valueLabelDisplay="on"
