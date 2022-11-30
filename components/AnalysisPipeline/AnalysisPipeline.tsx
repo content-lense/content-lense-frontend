@@ -76,7 +76,7 @@ function AnalysisPipeline(props: { articleId: string }) {
       )}
       {numLoading > 0 && <LinearProgress />}
       {articleAnalysisResults.map((a) => (
-        <Stack direction="row">
+        <Stack direction="row" key={a.id}>
           <Chip
             icon={
               a.status === ArticleAnalysisResultStatus.DONE ? <DoneIcon /> : <HourglassTopIcon />

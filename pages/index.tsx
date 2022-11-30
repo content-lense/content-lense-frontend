@@ -14,7 +14,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { PureComponent, useEffect, useState } from "react";
+import React, { Fragment, PureComponent, useEffect, useState } from "react";
 import { DashboardKpiCard } from "../components/Dashboard/Startpage/DashboardKpiCard";
 import { useQuery } from "@tanstack/react-query";
 import { GenericGetItem, GenericGetItems, GenericGetItemsAsHydra } from "../data/ReactQueries";
@@ -81,10 +81,10 @@ const Home: NextPage = () => {
         >
           <List>
             {tenLastAddedArticles["hydra:member"].map((a) => (
-              <>
+              <Fragment key={a.id}>
                 <ArticleListItem article={a} />
                 <Divider />
-              </>
+              </Fragment>
             ))}
           </List>
         </DashboardCard>

@@ -17,7 +17,7 @@ function WebhookList() {
   }
   return (
     <List>
-      {data.map((a, idx) => (
+      {data.map((a) => (
         <Fragment key={a.id}>
           <WebhookListItem webhook={a} />
           <Divider />
