@@ -110,7 +110,7 @@ const Home: NextPage = () => {
             <List>
               {messages?.map((message) => {
                 return (
-                  <>
+                  <Fragment key={message.id}>
                     <Card>
                       <CardHeader
                         title={
@@ -153,8 +153,10 @@ const Home: NextPage = () => {
                         <Stack direction="column">
                           {message.queueName === "failed" && (
                             <>
-                              {message.exceptions.map((e) => (
-                                <Alert severity="error">{e}</Alert>
+                              {message.exceptions.map((e, idx) => (
+                                <Alert key={"alert-" + idx} severity="error">
+                                  {e}
+                                </Alert>
                               ))}
                             </>
                           )}
@@ -169,7 +171,7 @@ const Home: NextPage = () => {
                       </CardContent>
                     </Card>
                     <Divider />
-                  </>
+                  </Fragment>
                 );
               })}
             </List>
