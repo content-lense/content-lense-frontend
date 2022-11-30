@@ -6,9 +6,10 @@ import AnalysisMicroserviceListItem from "./WebhookListItem";
 import { AnalysisMicroserviceInterface } from "../../interfaces/AnalysisMicroserviceInterface";
 import { WebhookInterface } from "../../interfaces/WebhookInterface";
 import WebhookListItem from "./WebhookListItem";
+import { Fragment } from "react";
 
 function WebhookList() {
-  const { data, isLoading } = useQuery(["analysis_microservices"], () =>
+  const { data, isLoading } = useQuery(["webhooks"], () =>
     GenericGetItems<WebhookInterface>("/webhooks")
   );
   if (isLoading || !data) {
@@ -16,11 +17,11 @@ function WebhookList() {
   }
   return (
     <List>
-      {data.map((a) => (
-        <>
+      {data.map((a, idx) => (
+        <Fragment key={a.id}>
           <WebhookListItem webhook={a} />
           <Divider />
-        </>
+        </Fragment>
       ))}
     </List>
   );

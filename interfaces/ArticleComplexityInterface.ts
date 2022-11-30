@@ -1,7 +1,7 @@
 import { ArticleInterface } from "./ArticleInterface";
 
 
-export interface ArticleComplexityNumberTypes {
+export interface ArticleComplexityNumberTypes{
   wienerSachtextIndex: number;
   readingTimeInMinutes: number;
   totalWords: number;

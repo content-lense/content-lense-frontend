@@ -9,7 +9,7 @@
     "logout": "Logout",
     "dashboard": "Dashboard",
     "textComplexity": "Textkomplexität",
-    "topics": "Themen",
+    "topics":"Themen",
     "group": {
       "default": "Dashboards",
       "entities": "Entitäten",

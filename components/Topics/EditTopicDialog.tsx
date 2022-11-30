@@ -41,12 +41,9 @@ export default function EditTopicDialog(props: EditTopicDialogInterface) {
     error: onSaveError,
   } = useMutation(GenericPostItem<CreateArticleTopicInterface, ArticleTopicInterface>, {
     onSuccess: (newTopic: ArticleTopicInterface) => {
-      console.log("SAVED");
       queryClient.setQueryData(["topics"], [...(topics ?? []), newTopic]);
     },
-    onError: (err: Error) => {
-      console.log("ERROR", err);
-    },
+    onError: (err: Error) => {},
   });
   const { mutate: updateArticleTopic, isLoading: isUpdating } = useMutation(
     GenericPutItem<UpdateArticleTopicInterface, ArticleTopicInterface>,
@@ -60,7 +57,6 @@ export default function EditTopicDialog(props: EditTopicDialogInterface) {
           updatedTopic
         );
         queryClient.setQueryData(["topics"], _topics);
-        console.log("ON SUCCESS", updatedTopic, topics);
       },
     }
   );
@@ -78,25 +74,26 @@ export default function EditTopicDialog(props: EditTopicDialogInterface) {
     validationSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
-      console.log(values);
+      let result;
       if (!props.topic) {
-        const result = await createArticleTopic({
+        result = await createArticleTopic({
           "@context": "/article_topics",
           name: values.name,
           blacklist: values.blacklist.split("\n"),
           whitelist: values.whitelist.split("\n"),
         });
       } else {
-        const result = await updateArticleTopic({
+        result = await updateArticleTopic({
           ...props.topic,
           name: values.name,
           blacklist: values.blacklist.split("\n"),
           whitelist: values.whitelist.split("\n"),
         });
       }
+
+      props.onClose();
     },
   });
-  console.log(formik.values, "formikValues", props.topic, isErrorSaving, onSaveError);
   return (
     <Dialog open={props.isOpen}>
       <DialogTitle>

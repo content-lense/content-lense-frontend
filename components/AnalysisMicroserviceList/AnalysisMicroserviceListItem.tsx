@@ -32,6 +32,7 @@ function AnalysisMicroserviceListItem(props: { service: AnalysisMicroserviceInte
           </React.Fragment>
         }
       />
+      <Chip color={a.isActive ? "success" : "default"} label={a.isActive ? "Active" : "Disabled"} />
     </ListItem>
   );
 }

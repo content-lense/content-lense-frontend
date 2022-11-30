@@ -5,6 +5,7 @@ import { ApipSingleValueFilter } from './apip-single-value-filter';
 import { ApipOrder, ApipOrderFilter } from './apip-order-filter';
 import { ApipDateFilter } from './apip-date-filter';
 import { ApipPageFilter } from './apip-page-filter';
+import { ApipOrderByRelationCountFilter } from './apip-order-by-relation-count-filter';
 
 const filterClasses = {
     [typeof ApipArrayValueFilter]: ApipArrayValueFilter,
@@ -42,6 +43,13 @@ export class ApipFilterEncoder {
     addOrderFilter<T>(key: string, order?: ApipOrder | null | undefined) {
         if (order) {
             this.add(new ApipOrderFilter({ key, order }));
+        }
+        return this;
+    }
+    
+    addOrderByRelationCountFilter(key: string, order?: ApipOrder | null | undefined, properties?: string[] ){
+        if(properties && order){
+            this.add(new ApipOrderByRelationCountFilter({key, order, properties}))
         }
         return this;
     }

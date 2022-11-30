@@ -23,7 +23,11 @@ interface RangeFilterProps {
 function FilterItems(items: RangeFilterFieldProps[]) {
   let menuItems: Array<JSX.Element> = [];
   items.map((item) => {
-    menuItems.push(<MenuItem value={item.field}>{item.label}</MenuItem>);
+    menuItems.push(
+      <MenuItem key={item.field} value={item.field}>
+        {item.label}
+      </MenuItem>
+    );
   });
   return menuItems;
 }
@@ -63,7 +67,6 @@ export default function RangeFilter(props: RangeFilterProps) {
       }
     );
   }
-  console.log(sliderValue, "sliderVal");
   return (
     <Grid container spacing={4}>
       <Grid item xs={12} md={6}>

@@ -32,7 +32,7 @@ export default function ArticleComplexityList(props: ArticleComplexityListPropsI
         />
         <DataGridTable
           rows={props.rows}
-          isLoading={props.isLoading}
+          loading={props.loading}
           pageSize={props.pageSize}
           page={props.page}
           rowCount={props.rowCount}

@@ -17,7 +17,7 @@ function DashboardCard(props: DashboardCardProps) {
       return "100%";
     }
   }
-  console.log(scrollableCardHeight);
+
   return (
     <>
       {props.isScrollable ? (

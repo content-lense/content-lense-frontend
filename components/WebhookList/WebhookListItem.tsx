@@ -33,6 +33,7 @@ function WebhookListItem(props: { webhook: WebhookInterface }) {
           </React.Fragment>
         }
       />
+      <Chip color={a.isActive ? "success" : "default"} label={a.isActive ? "Active" : "Disabled"} />
     </ListItem>
   );
 }

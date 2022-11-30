@@ -3,7 +3,6 @@ import "../styles/globals.css";
 import "node_modules/highlight.js/styles/atom-one-dark.css";
 import type { AppProps } from "next/app";
 import AuthenticatedLayout from "../components/AuthenticatedLayout";
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { appWithTranslation } from "next-i18next";
 import { useUser } from "../helpers/useUser";
 import { PwaContext } from "../helpers/PwaContext";
@@ -15,6 +14,9 @@ import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DefaultQueryFn } from "../data/ReactQueries";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import ThemeProvider from "@mui/material/styles/ThemeProvider";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: any) => any;

@@ -5,8 +5,7 @@ import {
   IconButton,
   Stack,
   Toolbar,
-  Typography,
-  useTheme,
+  Typography
 } from "@mui/material";
 import { FC, useContext, useEffect, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -17,6 +16,7 @@ import Link from "next/link";
 import { PwaContext } from "../helpers/PwaContext";
 import LoadingScreen from "./LoadingScreen";
 import Image from "next/image";
+import { useTheme } from "@mui/material/styles";
 
 interface AuthenticatedLayoutProps {
   children: JSX.Element;

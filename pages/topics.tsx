@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Dialog,
@@ -30,7 +31,11 @@ const Topics: NextPage = () => {
   const [pageSize, setPageSize] = useState(25);
   const [totalRowCount, setTotalRowCount] = useState(0);
   const [sortModel, setSortModel] = useState<GridSortItem[]>([{ field: "", sort: undefined }]);
-  const { data: topics, isLoading } = useQuery(
+  const {
+    data: topics,
+    isLoading,
+    refetch: refetchTopics,
+  } = useQuery(
     ["topics", [filterValue, page, pageSize, sortModel]],
     () => {
       const filterEncoder = new ApipFilterEncoder();
@@ -39,7 +44,16 @@ const Topics: NextPage = () => {
         .addPageFilter({ itemsPerPage: pageSize, page: page + 1 })
         .addOrderFilter(
           sortModel?.[0].field ?? "",
-          sortModel[0] ? (sortModel[0].sort as ApipOrder) : undefined
+          sortModel[0] && sortModel[0].field != "count"
+            ? (sortModel[0].sort as ApipOrder)
+            : undefined
+        )
+        .addOrderByRelationCountFilter(
+          sortModel[0] && sortModel[0].field === "count" ? "articles" : "",
+          sortModel[0] && sortModel[0].field === "count"
+            ? (sortModel[0].sort as ApipOrder)
+            : undefined,
+          ["name", "articleCount", "whitelist", "blacklist"]
         );
       return GenericGetItemsAsHydra<ArticleTopicInterface>("/article_topics", filterEncoder);
     },
@@ -70,10 +84,15 @@ const Topics: NextPage = () => {
   if (!vennData) {
     return <></>;
   }
-
+  console.log("Topics", topics);
   return (
     <>
       <Stack spacing={2}>
+        <Alert severity="info">
+          Es werden {numOfTopics} Themen sortiert nach Anzahl der Artikel angezeigt. Themen können
+          sich überschneiden, da ein Artikel mehreren Themen zugeordnet sein kann. Die Anzahl der
+          Themen (max. 10) kann mit dem Slider verändert werden.
+        </Alert>
         <Slider
           sx={{ pt: 7 }}
           valueLabelDisplay="on"
@@ -101,7 +120,7 @@ const Topics: NextPage = () => {
           Hinzufügen
         </Button>
         <TopicsTable
-          topics={topics ? topics["hydra:member"] ?? [] : []}
+          rows={topics ? topics["hydra:member"] ?? [] : []}
           onEdit={(e) => {
             setSelectedTopic(e);
             setIsShowingEditTopicDialog(true);
@@ -116,15 +135,18 @@ const Topics: NextPage = () => {
           }}
           handleSorting={(sortModel) => {
             setPage(0);
-            setSortModel(sortModel);
+            sortModel.length > 0
+              ? setSortModel(sortModel)
+              : setSortModel([{ field: "", sort: undefined }]);
           }}
-          isLoading={isLoading}
+          loading={isLoading}
         />
       </Stack>
       <EditTopicDialog
         onClose={() => {
           setIsShowingEditTopicDialog(false);
           setSelectedTopic(undefined);
+          refetchTopics();
         }}
         isOpen={isShowingEditTopicDialog}
         topic={selectedTopic}

@@ -24,9 +24,8 @@ const columns: GridColDef[] = [
   {
     field: "count",
     headerName: "Anzahl Artikel",
-    sortable: false,
     width: 150,
-    valueGetter: (params: GridValueGetterParams) => params.row.articles.length,
+    valueGetter: (params: GridValueGetterParams) => params.row.articleCount,
   },
   {
     field: "whitelist",
@@ -34,8 +33,8 @@ const columns: GridColDef[] = [
     sortable: false,
     width: 420,
     renderCell: (params: GridRenderCellParams<string>) =>
-      params.row.whitelist.map((keyword: string) => {
-        return <Chip label={keyword} />;
+      params.row.whitelist.map((keyword: string, idx: number) => {
+        return <Chip key={idx} label={keyword + "-" + idx} />;
       }),
   },
   {
@@ -44,8 +43,8 @@ const columns: GridColDef[] = [
     sortable: false,
     width: 420,
     renderCell: (params: GridRenderCellParams<string>) =>
-      params.row.blacklist.map((keyword: string) => {
-        return <Chip label={keyword} />;
+      params.row.blacklist.map((keyword: string, idx: number) => {
+        return <Chip label={keyword} key={keyword + "-" + idx} />;
       }),
   },
   {
@@ -74,42 +73,26 @@ const columns: GridColDef[] = [
   //   },
 ];
 
-interface TopicsTablePropsInterface
-  extends Pick<
-    DataGridTablePropsInterface,
-    | "pageSize"
-    | "page"
-    | "rowCount"
-    | "onPageChange"
-    | "onPageSizeChange"
-    | "handleSorting"
-    | "isLoading"
-  > {
-  topics: ArticleTopicInterface[];
+interface TopicsTablePropsInterface extends Omit<DataGridTablePropsInterface, "columns"> {
   onEdit: (topic: ArticleTopicInterface) => void;
 }
 
 export default function TopicsTable(props: TopicsTablePropsInterface) {
   return (
     <Box sx={{ height: 400, width: "100%" }}>
-      {/* <DataGrid
-        columns={columns}
-        loading={!props.topics}
-        rows={props.topics ?? []}
-        onCellClick={(e) => {
-          e.field === "edit" && props.onEdit(e.row);
-        }}
-      /> */}
       <DataGridTable
-        rows={props.topics}
+        rows={props.rows}
         columns={columns}
-        isLoading={props.isLoading}
+        loading={props.loading}
         pageSize={props.pageSize}
         page={props.page}
         rowCount={props.rowCount}
         onPageChange={props.onPageChange}
         onPageSizeChange={props.onPageSizeChange}
         handleSorting={props.handleSorting}
+        onCellClick={(e) => {
+          e.field === "edit" && props.onEdit(e.row);
+        }}
       />
     </Box>
   );

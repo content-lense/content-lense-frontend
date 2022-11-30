@@ -22,6 +22,14 @@ export interface ArticleInterface extends ApiPlatformItemResponse {
   articleAnalysisResults: string[];
   mentionedPersons: ArticleMentionInterface[];
   complexities: ArticleComplexityInterface[];
+  sentimentOfHeading: number;
+  sentimentOfText: number;
+  sentimentOfAbstract: number;
+  text: string;
+  articleTopics: {
+    "@id": string;
+    name: string;
+  }[]
 }
 
 export interface CreateArticleInterface {
@@ -29,4 +37,6 @@ export interface CreateArticleInterface {
   title: string;
   abstract: string;
   text: string;
+  rawAuthors?: string;
+  rawTopics?: string;
 }

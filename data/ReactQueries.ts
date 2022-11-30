@@ -39,7 +39,6 @@ export const GenericGetItems = async <T extends unknown>(
   entity: string,
   filterEncoder?: ApipFilterEncoder,
 ) => {
-  console.log("Encoder", filterEncoder);
   const req = await ApiFetch(
     entity + (filterEncoder ? "?" + filterEncoder.encode() : "")
   );
@@ -50,6 +49,7 @@ export const GenericGetItems = async <T extends unknown>(
 };
 
 const parseDateObjects = (elements: any) => {
+  if (!elements || !elements.length) return [];
   return elements.map((e: any) => {
     if (e.createdAt) e.createdAt = new Date(e.createdAt);
     if (e.updatedAt) e.updatedAt = new Date(e.updatedAt);

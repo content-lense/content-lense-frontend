@@ -1,7 +1,15 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Button, IconButton, InputAdornment, Stack, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  IconButton,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
@@ -97,6 +105,9 @@ const Settings: NextPage = () => {
               Add
             </Button>
           </Stack>
+          <Alert severity="info">
+            Webhooks send POST requests with the analysis result to your configured endpoints.
+          </Alert>
           <WebhookList />
         </Stack>
 

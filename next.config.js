@@ -11,7 +11,16 @@ const nextConfig = {
   },
   reactStrictMode: true,
   swcMinify: true,
-  output: 'standalone'
+  experimental: {
+    modularizeImports: {
+      "@mui/material": {
+        transform: "@mui/material/{{member}}",
+      },
+      "@mui/icons-material": {
+        transform: "@mui/icons-material/{{member}}",
+      },
+    },
+  },
 };
 
 const { i18n } = require("./next-i18next.config");

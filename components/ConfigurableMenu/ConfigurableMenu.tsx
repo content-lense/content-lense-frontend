@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
-import { FC } from "react";
+import { Fragment, FC } from "react";
 import { ConfigurableMenuItem as ConfigurableMenuItemInterface } from "./ConfigurableMenu.interface";
 import ConfigurableMenuItem from "./ConfigurableMenuItem";
 
@@ -60,7 +60,7 @@ const ConfigurableMenu: FC<ConfigurableMenuProps> = (props) => {
     <List>
       {Object.keys(itemsByGroups).map((key, idx, source) => {
         return (
-          <>
+          <Fragment key={idx}>
             {itemsByGroups[key][0].groupI18NKey && (
               <Typography variant="caption" sx={{ p: 1, mb: 1 }}>
                 {t(itemsByGroups[key][0].groupI18NKey ?? "")}
@@ -81,7 +81,7 @@ const ConfigurableMenu: FC<ConfigurableMenuProps> = (props) => {
               ))}
 
             {idx !== source.length - 1 && <Divider />}
-          </>
+          </Fragment>
         );
       })}
     </List>

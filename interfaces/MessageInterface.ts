@@ -5,6 +5,7 @@ export interface MessageInterface extends Omit<ApiPlatformItemResponse, "@contex
     body?: any;
     header?: string;
     queueName?: string;
+    exceptions: string[];
     createdAt?: Date;
     availableAt?: Date;
     deliveredAt?: Date;

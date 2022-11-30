@@ -1,13 +1,11 @@
 import { ConfigurableMenuItem } from "./components/ConfigurableMenu/ConfigurableMenu.interface";
-import ApartmentIcon from "@mui/icons-material/Apartment";
 import PersonIcon from "@mui/icons-material/Person";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
-import ChairIcon from "@mui/icons-material/Chair";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Logout } from "@mui/icons-material";
 import StraightenIcon from '@mui/icons-material/Straighten';
-
+import BubbleChartIcon from '@mui/icons-material/BubbleChart';
 const MenuConfig: ConfigurableMenuItem[] = [
   {
     titleI18NKey: "menu.dashboard",
@@ -26,7 +24,7 @@ const MenuConfig: ConfigurableMenuItem[] = [
   {
     titleI18NKey: "menu.topics",
     route: "/topics",
-    icon: StraightenIcon,
+    icon: BubbleChartIcon,
     group: "default",
     groupI18NKey: "menu.group.default"
   },

@@ -4,6 +4,7 @@ import { ArticleInterface } from "../../interfaces/ArticleInterface";
 import { CircularProgress, Divider, List, Typography } from "@mui/material";
 import PersonListItem from "./PersonListItem";
 import { PersonInterface } from "../../interfaces/PersonInterface";
+import { Fragment } from "react";
 
 function PersonList() {
   const { data, isLoading } = useQuery(["persons"], () =>
@@ -15,10 +16,10 @@ function PersonList() {
   return (
     <List>
       {data.map((p) => (
-        <>
+        <Fragment key={p.id}>
           <PersonListItem person={p} />
           <Divider />
-        </>
+        </Fragment>
       ))}
     </List>
   );

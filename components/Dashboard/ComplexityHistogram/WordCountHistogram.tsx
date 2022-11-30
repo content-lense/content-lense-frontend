@@ -68,9 +68,10 @@ export default function WordCountHistogram(props: WordCountHistogramProps) {
   ) {
     const { x, y, stroke, payload } = props;
 
-    if (payload && data) {
-      const from = giveHistogramData(data)[payload.value].from;
-      const to = giveHistogramData(data)[payload.value].to;
+    if (!data) return <></>;
+    const histogramData = giveHistogramData(data);
+    if (payload && histogramData[payload.value]) {
+      const { from, to } = histogramData[payload.value];
       return (
         <g transform={`translate(${x},${y})`}>
           <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">
@@ -86,7 +87,7 @@ export default function WordCountHistogram(props: WordCountHistogramProps) {
       <BarChart data={giveHistogramData(data)} margin={{ bottom: 50 }}>
         <XAxis
           label={{
-            value: "Wortanzahl in Tausend",
+            value: "Wortanzahl in Hundert",
             position: "insideBottom",
             offset: -45,
           }}

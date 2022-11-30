@@ -64,13 +64,12 @@ const TextComplexity: NextPage = () => {
   if (!articleComplexityBoundaries) {
     return <></>;
   }
-  console.log(pageSize, "pageSize", page);
   return (
     <Stack spacing={4}>
       <Head>
-        <title>Test</title>
+        <title>Text Complexity</title>
       </Head>
-      <Grid container spacing={4}>
+      <Grid container spacing={4} sx={{ mt: 2 }}>
         <Grid item xs={12} md={4} sx={{ height: CHART_HEIGHT }}>
           <WienerSachtextIndexHistogram
             onClick={(rangeLowerBoundary, rangeUpperBoundary) =>
@@ -107,7 +106,7 @@ const TextComplexity: NextPage = () => {
       </Grid>
       <ArticleComplexityList
         rows={articleData ? articleData["hydra:member"] ?? [] : []}
-        isLoading={isLoading}
+        loading={isLoading}
         onRangeFilterChange={onFilterChange}
         rangeFilterValues={filterBoundaries}
         articleComplexityBoundaries={articleComplexityBoundaries ?? {}}

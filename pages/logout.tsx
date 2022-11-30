@@ -9,7 +9,6 @@ import { useUser } from "../helpers/useUser";
 
 export default function Page() {
   useEffect(() => {
-    console.log("Logging out user");
     const logout = async () => {
       await logoutUser();
       setTimeout(() => router.push("/login"), 2000);

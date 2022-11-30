@@ -61,14 +61,13 @@ export default function ReadingTimeHistogram(props: ReadingTimeHistogramProps) {
     }
   ) {
     const { x, y, stroke, payload } = props;
-
-    if (payload && data)
+    if (!data) return <></>;
+    const histogramData = giveHistogramData(data);
+    if (payload && histogramData[payload.value])
       return (
         <g transform={`translate(${x},${y})`}>
           <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">
-            {`${giveHistogramData(data)[payload.value].from} – ${
-              giveHistogramData(data)[payload.value].to
-            }`}
+            {`${histogramData[payload.value].from} – ${histogramData[payload.value].to}`}
           </text>
         </g>
       );
