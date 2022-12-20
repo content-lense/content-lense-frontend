@@ -30,6 +30,7 @@ interface EditTopicDialogInterface {
 }
 
 export default function EditTopicDialog(props: EditTopicDialogInterface) {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { data: topics, isLoading } = useQuery(["topics"], () =>
     GenericGetItems<ArticleTopicInterface>("/article_topics")
@@ -43,7 +44,7 @@ export default function EditTopicDialog(props: EditTopicDialogInterface) {
     onSuccess: (newTopic: ArticleTopicInterface) => {
       queryClient.setQueryData(["topics"], [...(topics ?? []), newTopic]);
     },
-    onError: (err: Error) => {},
+    onError: (err: Error) => { },
   });
   const { mutate: updateArticleTopic, isLoading: isUpdating } = useMutation(
     GenericPutItem<UpdateArticleTopicInterface, ArticleTopicInterface>,
@@ -98,7 +99,7 @@ export default function EditTopicDialog(props: EditTopicDialogInterface) {
     <Dialog open={props.isOpen}>
       <DialogTitle>
         <Typography variant="h5">
-          {props.topic ? "Thema bearbeiten" : "Neues Thema erstellen"}
+          {props.topic ? t("Edit topic") : t("Create new topic")}
         </Typography>
       </DialogTitle>
       <DialogContent>
@@ -106,7 +107,7 @@ export default function EditTopicDialog(props: EditTopicDialogInterface) {
           <TextField
             fullWidth
             name="name"
-            label="Name"
+            label={t("Name")}
             variant="outlined"
             value={formik.values.name}
             onChange={formik.handleChange}
@@ -115,7 +116,7 @@ export default function EditTopicDialog(props: EditTopicDialogInterface) {
           <TextField
             fullWidth
             name="whitelist"
-            label="Whitelist keywords"
+            label={t("Whitelist keywords")}
             variant="outlined"
             multiline
             minRows={3}
@@ -125,7 +126,7 @@ export default function EditTopicDialog(props: EditTopicDialogInterface) {
           <TextField
             fullWidth
             name="blacklist"
-            label="Blacklist keywords"
+            label={t("Blacklist keywords")}
             variant="outlined"
             multiline
             minRows={3}
@@ -133,7 +134,7 @@ export default function EditTopicDialog(props: EditTopicDialogInterface) {
             onChange={formik.handleChange}
           />
           {isErrorSaving && (
-            <Alert severity="warning">Beim speichern des Themas ist ein Fehler aufgetreten.</Alert>
+            <Alert severity="warning">{t("An error occured while trying to save.")}</Alert>
           )}
           {isSaving && <CircularProgress />}
         </Stack>
@@ -146,10 +147,10 @@ export default function EditTopicDialog(props: EditTopicDialogInterface) {
             formik.resetForm();
           }}
         >
-          Abbrechen
+          {t("Cancle")}
         </Button>
         <Button variant="outlined" onClick={() => formik.handleSubmit()}>
-          Speichern
+          {t("Save")}
         </Button>
       </DialogActions>
     </Dialog>

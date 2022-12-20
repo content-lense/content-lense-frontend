@@ -23,7 +23,7 @@ const columns: GridColDef[] = [
   },
   {
     field: "count",
-    headerName: "Anzahl Artikel",
+    headerName: "Total articles",
     width: 150,
     valueGetter: (params: GridValueGetterParams) => params.row.articleCount,
   },
@@ -79,7 +79,7 @@ interface TopicsTablePropsInterface extends Omit<DataGridTablePropsInterface, "c
 
 export default function TopicsTable(props: TopicsTablePropsInterface) {
   return (
-    <Box sx={{ height: 400, width: "100%" }}>
+    <Box sx={{ height: 500, width: "100%" }}>
       <DataGridTable
         rows={props.rows}
         columns={columns}

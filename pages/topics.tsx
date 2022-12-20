@@ -2,13 +2,24 @@ import {
   Alert,
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Divider,
+  FormControl,
   Grid,
+  InputAdornment,
+  InputLabel,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  OutlinedInput,
   Slider,
   Stack,
+  TablePagination,
 } from "@mui/material";
 import { NextPage } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -18,54 +29,27 @@ import EditTopicDialog from "../components/Topics/EditTopicDialog";
 import { useQuery } from "@tanstack/react-query";
 import { GenericGetItems, GenericGetItemsAsHydra } from "../data/ReactQueries";
 import { ArticleTopicInterface } from "../interfaces/ArticleTopicInterface";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { VennDiagram, VennSeries } from "reaviz";
 import { ApiFetch } from "../helpers/ApiFetch";
 import { GridSortItem, GridSortModel } from "@mui/x-data-grid";
 import { ApipFilterEncoder } from "../helpers/ApiPlatform/apip-filter-encoder";
 import { ApipOrder } from "../helpers/ApiPlatform/apip-order-filter";
+import EntityRowsWrapper from "../components/generator/EntityRowsWrapper";
+import { useRouter } from "next/router";
+import SearchIcon from "@mui/icons-material/Search";
+import { useTranslation } from "next-i18next";
 
 const Topics: NextPage = () => {
-  const [filterValue, setFilterValue] = useState({ field: "", from: 0, to: 100 });
-  const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(25);
-  const [totalRowCount, setTotalRowCount] = useState(0);
-  const [sortModel, setSortModel] = useState<GridSortItem[]>([{ field: "", sort: undefined }]);
-  const {
-    data: topics,
-    isLoading,
-    refetch: refetchTopics,
-  } = useQuery(
-    ["topics", [filterValue, page, pageSize, sortModel]],
-    () => {
-      const filterEncoder = new ApipFilterEncoder();
-      filterEncoder
-        .addRangeFilter(filterValue.field, { min: filterValue.from, max: filterValue.to })
-        .addPageFilter({ itemsPerPage: pageSize, page: page + 1 })
-        .addOrderFilter(
-          sortModel?.[0].field ?? "",
-          sortModel[0] && sortModel[0].field != "count"
-            ? (sortModel[0].sort as ApipOrder)
-            : undefined
-        )
-        .addOrderByRelationCountFilter(
-          sortModel[0] && sortModel[0].field === "count" ? "articles" : "",
-          sortModel[0] && sortModel[0].field === "count"
-            ? (sortModel[0].sort as ApipOrder)
-            : undefined,
-          ["name", "articleCount", "whitelist", "blacklist"]
-        );
-      return GenericGetItemsAsHydra<ArticleTopicInterface>("/article_topics", filterEncoder);
-    },
-    {
-      onSuccess(data) {
-        setTotalRowCount(data["hydra:totalItems"] ?? 0);
-      },
-    }
-  );
-  const [isShowingEditTopicDialog, setIsShowingEditTopicDialog] = useState(false);
-  const [selectedTopic, setSelectedTopic] = useState<ArticleTopicInterface | undefined>();
+  const { t } = useTranslation();
+
   const [numOfTopics, setNumOfTopics] = useState<number>(6);
+  const [searchInput, setSearchInput] = useState("");
+  const [searchString, setSearchString] = useState("");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [totalRowCount, setTotalRowCount] = useState(0);
+  const router = useRouter();
 
   const {
     data: vennData,
@@ -77,6 +61,20 @@ const Topics: NextPage = () => {
     })
   );
 
+  function handlePageChange(_page: number) {
+    console.log("pageinside: ", _page)
+    setPage(_page);
+  }
+  function handleChangeRowsPerPage(value: string) {
+    setRowsPerPage(parseInt(value));
+    setPage(0);
+  }
+
+  const filterEncoder = new ApipFilterEncoder();
+  filterEncoder
+    .addPageFilter({ itemsPerPage: rowsPerPage, page: page + 1 })
+    .addSingleValueFilter("q", searchString)
+
   useEffect(() => {
     refetchVennData();
   }, [numOfTopics]);
@@ -84,14 +82,11 @@ const Topics: NextPage = () => {
   if (!vennData) {
     return <></>;
   }
-  console.log("Topics", topics);
   return (
     <>
       <Stack spacing={2}>
         <Alert severity="info">
-          Es werden {numOfTopics} Themen sortiert nach Anzahl der Artikel angezeigt. Themen können
-          sich überschneiden, da ein Artikel mehreren Themen zugeordnet sein kann. Die Anzahl der
-          Themen (max. 10) kann mit dem Slider verändert werden.
+          {t("{{numOfTopics}} topics are displayed sorted by the number of artlces. Topics can overlap as an article can be assigned to several topics. The number of topics (max 10) can be changed with the slider.", { numOfTopics: numOfTopics })}
         </Alert>
         <Slider
           sx={{ pt: 7 }}
@@ -110,47 +105,56 @@ const Topics: NextPage = () => {
             series={<VennSeries colorScheme={["#2d60e8"]} />}
           />
         </Box>
-
-        <Button
-          startIcon={<AddIcon />}
-          variant="outlined"
-          sx={{ alignSelf: "flex-end" }}
-          onClick={() => setIsShowingEditTopicDialog(true)}
-        >
-          Hinzufügen
-        </Button>
-        <TopicsTable
-          rows={topics ? topics["hydra:member"] ?? [] : []}
-          onEdit={(e) => {
-            setSelectedTopic(e);
-            setIsShowingEditTopicDialog(true);
-          }}
-          pageSize={pageSize}
+        <FormControl sx={{ width: "400px" }} variant="outlined">
+          <InputLabel htmlFor="search">{t("Search")}</InputLabel>
+          <OutlinedInput
+            id="search"
+            type="text"
+            value={searchInput}
+            onChange={(e) => {
+              setSearchInput(e.target.value);
+              setSearchString(e.target.value);
+            }}
+            endAdornment={
+              <InputAdornment position="end">
+                <SearchIcon />
+              </InputAdornment>
+            }
+            label={t("Search")}
+          />
+        </FormControl>
+        <EntityRowsWrapper<ArticleTopicInterface> additionalCacheProperties={totalRowCount.toString()} path="article_topics" filters={filterEncoder} onSuccess={(totalLength) => setTotalRowCount(totalLength)} >
+          {(topics) =>
+          (
+            <List>{topics.map((topic) => {
+              return (
+                <Fragment key={topic.id}>
+                  <ListItem>
+                    <Stack direction={"row"} spacing={1}>
+                      <ListItemButton onClick={() => {
+                        router.push({ pathname: "entities/articles", query: { topic: topic.name } })
+                      }}>
+                        <ListItemText secondary={topic.articleCount} primary={topic.name} sx={{ pr: 2 }} />
+                      </ListItemButton>
+                    </Stack>
+                  </ListItem>
+                  <Divider />
+                </Fragment>
+              );
+            })}
+            </List>
+          )
+          }
+        </EntityRowsWrapper>
+        <TablePagination
+          component="div"
+          count={totalRowCount}
           page={page}
-          rowCount={totalRowCount}
-          onPageChange={setPage}
-          onPageSizeChange={(val) => {
-            setPageSize(val);
-            setPage(0);
-          }}
-          handleSorting={(sortModel) => {
-            setPage(0);
-            sortModel.length > 0
-              ? setSortModel(sortModel)
-              : setSortModel([{ field: "", sort: undefined }]);
-          }}
-          loading={isLoading}
+          rowsPerPage={rowsPerPage}
+          onPageChange={(e, _page) => { handlePageChange(_page) }}
+          onRowsPerPageChange={(e) => handleChangeRowsPerPage(e.target.value)}
         />
       </Stack>
-      <EditTopicDialog
-        onClose={() => {
-          setIsShowingEditTopicDialog(false);
-          setSelectedTopic(undefined);
-          refetchTopics();
-        }}
-        isOpen={isShowingEditTopicDialog}
-        topic={selectedTopic}
-      />
     </>
   );
 };
