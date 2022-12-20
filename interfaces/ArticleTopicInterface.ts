@@ -3,6 +3,7 @@ import { ArticleInterface } from "./ArticleInterface";
 
 export interface ArticleTopicInterface extends CreateArticleTopicInterface, Omit<ApiPlatformItemResponse, "@context"> {
   articles: ArticleInterface[];
+  articleCount?: number;
 }
 
 export interface CreateArticleTopicInterface {

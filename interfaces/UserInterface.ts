@@ -5,9 +5,13 @@ export interface UserLoginInterface {
   email: string;
   password: string;
 }
-export interface BaseUserInterface extends UserLoginInterface {}
+export interface BaseUserInterface extends UserLoginInterface { }
 export interface UserSignupInterface extends BaseUserInterface {
   repeatPassword: string;
+}
+
+export interface CreateUserInterface extends UserSignupInterface {
+  "@context": string;
 }
 
 export interface InviteOrganisationMemberInterface {
@@ -23,14 +27,13 @@ export interface OrganisationTeamMemberInterface extends ApiPlatformItemResponse
   displayName: string;
   email: string;
   isConfirmed: boolean;
+  apiToken: string;
 }
 
 export interface AuthenticatedUserInterface extends BaseUserInterface, ApiPlatformItemResponse {
   displayName: string;
   isActive: boolean;
   roles: Array<UserRoles>;
-  ownedOrganisation?: {
-    id: string;
-    ["@id"]: string;
-  };
+  ownedOrganisations: string[];
+  organisations: string[];
 }
