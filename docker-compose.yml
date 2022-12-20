@@ -3,6 +3,8 @@ version: "3.7"
 services:
   cl-frontend:
     container_name: cl-frontend
+    environment:
+      API_ENDPOINT: 'https://localhost'
     build:
       context: ./
       target: dev

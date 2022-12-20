@@ -21,7 +21,10 @@ const nextConfig = {
       },
     },
   },
-  output: 'standalone'
+  publicRuntimeConfig: {
+    API_ENDPOINT: process.env.API_ENDPOINT
+  }
+  output: 'standalone',
 };
 
 const { i18n } = require("./next-i18next.config");
