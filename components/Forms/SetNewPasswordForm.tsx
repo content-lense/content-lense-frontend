@@ -81,7 +81,7 @@ const SetNewPasswordForm = () => {
               fullWidth
               id="repeatPassword"
               name="repeatPassword"
-              label="Confirm new Password"
+              label={t("Confirm new Password")}
               variant="filled"
               type="password"
               onChange={(e) => {

@@ -7,6 +7,9 @@ import { Alert, Grid, TextField } from "@mui/material";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { ApiFetch } from "../../helpers/ApiFetch";
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig();
 
 interface ResetPasswordFormProps {
   email?: string | null;
@@ -28,7 +31,7 @@ const ResetPasswordForm: FC<ResetPasswordFormProps> = (props) => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoading(true);
-      const res = await ApiFetch(`/auth/reset-password`, {
+      const res = await fetch(`${publicRuntimeConfig.API_ENDPOINT}/auth/reset-password`, {
         body: JSON.stringify(values),
         method: "POST",
       });
@@ -49,7 +52,7 @@ const ResetPasswordForm: FC<ResetPasswordFormProps> = (props) => {
               fullWidth
               id="email"
               name="email"
-              label={t("Email")}
+              label={t("E-mail")}
               variant="filled"
               type="email"
               value={formik.values.email}

@@ -119,7 +119,7 @@ const LoginForm = () => {
               fullWidth
               id="email"
               name="email"
-              label={t("Email")}
+              label={t("E-mail")}
               variant="filled"
               value={formik.values.email}
               onChange={formik.handleChange}

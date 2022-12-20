@@ -14,12 +14,16 @@ import React from "react";
 import { AnalysisMicroserviceInterface } from "../../interfaces/AnalysisMicroserviceInterface";
 import { ArticleInterface } from "../../interfaces/ArticleInterface";
 
-function AnalysisMicroserviceListItem(props: { service: AnalysisMicroserviceInterface }) {
+function AnalysisMicroserviceListItem(props: {
+  service: AnalysisMicroserviceInterface;
+  onEdit: (service: AnalysisMicroserviceInterface) => void;
+}) {
   const { service: a } = props;
+  console.log(a, "a service");
   return (
     <ListItem
       secondaryAction={
-        <IconButton aria-label="edit-microservice">
+        <IconButton aria-label="edit-microservice" onClick={() => props.onEdit(a)}>
           <Edit />
         </IconButton>
       }
