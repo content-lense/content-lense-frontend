@@ -17,7 +17,11 @@ type CCBaseQueryProps = {
   /**
    * Specify query parameter like filter
    */
-  q?: QueryParameter;
+  q?: QueryParameter | string;
+  /**
+   * 
+   */
+  additionalCacheProps?: string;
 };
 
 type QueryPropsWithId = CCBaseQueryProps & {
@@ -62,10 +66,16 @@ export default function createCacheKey(props: CCUseQueryProps) {
     customCacheKey.push(props.entity);
   }
 
-  if (props.q) {
+  if (props.q && typeof props.q !== "string") {
     Object.entries(props.q).map(([key, value], index) => {
       customCacheKey.push(key + "=" + value);
     });
+  }
+  if (props.q && typeof props.q === "string") {
+    customCacheKey.push(props.q);
+  }
+  if (props.additionalCacheProps) {
+    customCacheKey.push(props.additionalCacheProps);
   }
   return customCacheKey;
 }
