@@ -24,11 +24,13 @@ import PersonIcon from "@mui/icons-material/Person";
 import PeopleIcon from "@mui/icons-material/People";
 import UpdateIcon from "@mui/icons-material/Update";
 import TroubleshootIcon from "@mui/icons-material/Troubleshoot";
+import { useTranslation } from "next-i18next";
 interface ArticleListItemProps {
   article: ArticleInterface;
   showTextComplexityChips?: boolean;
 }
 function ArticleListItem(props: ArticleListItemProps) {
+  const { t } = useTranslation();
   const { article: a } = props;
   const showTextComplexityChips = props.showTextComplexityChips ?? false;
   const router = useRouter();
@@ -42,7 +44,7 @@ function ArticleListItem(props: ArticleListItemProps) {
         secondary={
           <Stack direction="row" gap={2}>
             {a.publishedAt && (
-              <Tooltip title={`Published at ${a.publishedAt.toLocaleDateString()}`}>
+              <Tooltip title={t("Published at") + ` ${a.publishedAt.toLocaleDateString()}`}>
                 <Chip
                   icon={<LocalPrintshopIcon />}
                   label={`${a.publishedAt.toLocaleDateString()}`}
@@ -51,7 +53,7 @@ function ArticleListItem(props: ArticleListItemProps) {
             )}
 
             {a.authors && a.authors.length > 0 && (
-              <Tooltip title={`Authors: ${a.authors.map((a) => `${a.firstName} ${a.lastName}`)}`}>
+              <Tooltip title={t("Authors") + `: ${a.authors.map((a) => `${a.firstName} ${a.lastName}`)}`}>
                 <Chip
                   icon={a.authors.length > 1 ? <PeopleIcon /> : <PersonIcon />}
                   label={
@@ -66,7 +68,7 @@ function ArticleListItem(props: ArticleListItemProps) {
             {a.articleAnalysisResults.length > 0 && (
               <Chip
                 icon={<TroubleshootIcon />}
-                label={`${a.articleAnalysisResults.length} analyses`}
+                label={t(`{{length}} analyses`, { length: a.articleAnalysisResults.length })}
               />
             )}
           </Stack>
@@ -76,7 +78,7 @@ function ArticleListItem(props: ArticleListItemProps) {
         <Stack direction="row" spacing={1}>
           {a.sentimentOfText && <SentimentChip sentiment={a.sentimentOfText} />}
           {a.complexities.find((complex) => complex.part === "body")?.readingTimeInMinutes && (
-            <Tooltip title="Reading Time in minutes">
+            <Tooltip title={t("Reading Time in minutes")}>
               <Chip
                 icon={<AccessTimeIcon fontSize="small" />}
                 label={
@@ -87,7 +89,7 @@ function ArticleListItem(props: ArticleListItemProps) {
             </Tooltip>
           )}
           {a.complexities.find((complex) => complex.part === "body")?.totalWords && (
-            <Tooltip title="Length in Words">
+            <Tooltip title={t("Length in Words")}>
               <Chip
                 icon={<StraightenIcon fontSize="small" />}
                 label={
@@ -97,7 +99,7 @@ function ArticleListItem(props: ArticleListItemProps) {
             </Tooltip>
           )}
           {a.complexities.find((complex) => complex.part === "body")?.wienerSachtextIndex && (
-            <Tooltip title="Wiener Sachtext Index">
+            <Tooltip title={t("Wiener Sachtext Index")}>
               <Chip
                 icon={<SpellcheckIcon fontSize="small" />}
                 label={
