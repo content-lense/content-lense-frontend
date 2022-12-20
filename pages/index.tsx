@@ -28,12 +28,14 @@ import { MessageInterface } from "../interfaces/MessageInterface";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { ApiFetch } from "../helpers/ApiFetch";
-import EntityWrapper from "../components/generator/EntityWrapper";
+import EntityRowWrapper from "../components/generator/EntityRowWrapper";
 import { AnalysisMicroserviceInterface } from "../interfaces/AnalysisMicroserviceInterface";
 import moment from "moment";
 import AddedArticlesGraph from "../components/Dashboard/Startpage/AddedArticlesGraph";
+import { useTranslation } from "next-i18next";
 
 const Home: NextPage = () => {
+  const { t } = useTranslation();
   const now = new Date();
   const prior = new Date().setDate(now.getDate() - 30);
   const thirtyDaysAgo = new Date(prior);
@@ -67,7 +69,7 @@ const Home: NextPage = () => {
     <Grid container spacing={4}>
       <Grid item xs={12} md={4}>
         <DashboardKpiCard
-          heading={"Hinzugefügte Artikel"}
+          heading={t("Added articles")}
           value={articlesLastThirtyDays?.length}
           total={tenLastAddedArticles?.["hydra:totalItems"]}
           dayCount={30}
@@ -75,7 +77,7 @@ const Home: NextPage = () => {
       </Grid>
       <Grid item xs={12} md={8}>
         <DashboardCard
-          title="Zuletzt hinzugefügte Artikel"
+          title={t("Recent added articles")}
           isScrollable={true}
           scrollElementHeight={250}
         >
@@ -97,14 +99,14 @@ const Home: NextPage = () => {
       {/* messenger stats */}
       <Grid item xs={20} md={100}>
         <DashboardCard
-          title="Analysen in der Warteschlange"
+          title={t("Analyses in the queue")}
           isScrollable={true}
           scrollElementHeight={200}
         >
           <>
             {messages && messages.length === 0 && (
               <Alert severity="info">
-                Aktuell befinden sich keine Analysen in der Warteschlange.
+                {t("There are currently no analyses in the queue.")}
               </Alert>
             )}
             <List>
@@ -114,13 +116,13 @@ const Home: NextPage = () => {
                     <Card>
                       <CardHeader
                         title={
-                          <EntityWrapper<ArticleInterface>
+                          <EntityRowWrapper<ArticleInterface>
                             path={"articles"}
                             id={message.body["articleId"]}
                             properties={["title"]}
                           >
                             {(item) => <Typography variant="h6">{item.title}</Typography>}
-                          </EntityWrapper>
+                          </EntityRowWrapper>
                         }
                         subheader={
                           <Stack direction="row" spacing={2}>
@@ -160,13 +162,13 @@ const Home: NextPage = () => {
                               ))}
                             </>
                           )}
-                          <EntityWrapper<AnalysisMicroserviceInterface>
+                          <EntityRowWrapper<AnalysisMicroserviceInterface>
                             path={"analysis_microservices"}
                             id={message.body["analysisMicroserviceId"]}
                             properties={["title"]}
                           >
                             {(item) => <Typography variant="body1">{item.name}</Typography>}
-                          </EntityWrapper>
+                          </EntityRowWrapper>
                         </Stack>
                       </CardContent>
                     </Card>

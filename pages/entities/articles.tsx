@@ -26,43 +26,25 @@ import "node_modules/highlight.js/styles/atom-one-dark.css";
 import Highlight from "react-highlight";
 import ArticleList from "../../components/ArticleList/ArticleList";
 import CreateArticleForm from "../../components/Forms/CreateArticleForm";
+import { useTranslation } from "next-i18next";
+import { ArticleInterface, CreateArticleInterface } from "../../interfaces/ArticleInterface";
+import CodeExample from "../../components/CodeExample/CodeExample";
 
-function TabPanel(props: any) {
-  const { children, value, index, ...other } = props;
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box
-          sx={{
-            p: 0,
-          }}
-        >
-          {children}
-        </Box>
-      )}
-    </div>
-  );
-}
 
 const Articles: NextPage = () => {
+  const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState<number>(0);
 
   return (
     <Stack>
       <Head>
-        <title>Articles</title>
+        <title>{t("Articles")}</title>
       </Head>
 
-      <Typography variant="h4">Article list</Typography>
+      <Typography variant="h4">{t("Article list")}</Typography>
       <ArticleList />
-      <Typography variant="h4">Add a new article</Typography>
+      <Typography variant="h4">{t("Add a new article")}</Typography>
 
       <Accordion sx={{ mt: 2 }}>
         <AccordionSummary
@@ -72,7 +54,7 @@ const Articles: NextPage = () => {
         >
           <Stack flexDirection="row" gap={1}>
             <Input />
-            <Typography>Manually using a form</Typography>
+            <Typography>{t("Manually using a form")}</Typography>
           </Stack>
         </AccordionSummary>
         <AccordionDetails>
@@ -87,38 +69,23 @@ const Articles: NextPage = () => {
         >
           <Stack flexDirection="row" gap={1}>
             <Api />
-            <Typography>Automatic using the api</Typography>
+            <Typography>{t("Automatic using the api")}</Typography>
           </Stack>
         </AccordionSummary>
         <AccordionDetails>
-          <Stack>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <Tabs value={selectedTab} onChange={(e, value) => setSelectedTab(value)}>
-                <Tab icon={<Image width={32} height={32} src="/icons/js.png" />} />
-                <Tab icon={<Image width={32} height={32} src="/icons/php.png" />} />
-                <Tab icon={<Image width={32} height={32} src="/icons/python.png" />} />
-              </Tabs>
-            </Box>
-            <TabPanel value={selectedTab} index={0}>
-              <Highlight className="js">{`fetch("https://localhost:3001/articles?apiKey=YOUR_API_KEY", {
-  method: "PUT",
-  body: JSON.stringify({
-    headline: "ARTICLE HEADLINE",
-    body: "ARTICLE BODY",
-    publishedAt: ""
-  }),
-  headers: { "Content-Type": "application/json" },
-}).then((yourAticle) => {
-  // Put suceeding code here
-})`}</Highlight>
-            </TabPanel>
-            <TabPanel value={selectedTab} index={1}>
-              Item Two
-            </TabPanel>
-            <TabPanel value={selectedTab} index={2}>
-              Item Three
-            </TabPanel>
-          </Stack>
+          <CodeExample<CreateArticleInterface, any, ArticleInterface>
+            markdown={"# Title *Hello World*"}
+            iri={{ entity: "articles", id: "alkgh4qn49nw49naw9n9twankasja4utnanssds" }}
+            properties={{
+              post: {
+                "@context": "/articles",
+                abstract: "Abstract",
+                text: "Text",
+                title: "Title"
+              },
+              get: true,
+              delete: true,
+            }} />
         </AccordionDetails>
       </Accordion>
     </Stack>

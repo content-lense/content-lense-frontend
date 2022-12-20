@@ -28,10 +28,11 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useState } from "react";
 import SentimentChip from "../../../components/SentimentChip/SentimentChip";
 import AnalysisPipeline from "../../../components/AnalysisPipeline/AnalysisPipeline";
-import EntityWrapper from "../../../components/generator/EntityWrapper";
+import EntityRowWrapper from "../../../components/generator/EntityRowWrapper";
 import { ArticleAnalysisResultInterface } from "../../../interfaces/ArticleAnalysisResultInterface";
 
 export default function Page() {
+  const { t } = useTranslation();
   const router = useRouter();
   const query = router.query;
   const articleId = query.articleId as string;
@@ -59,17 +60,19 @@ export default function Page() {
           <Typography variant="h4">{article.title}</Typography>
           {article.sentimentOfHeading && <SentimentChip sentiment={article.sentimentOfHeading} />}
         </Stack>
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" sx={{ maxWidth: "500px" }} flexWrap="wrap">
           {article.articleTopics &&
-            article.articleTopics.map((topic) => <Chip key={topic["@id"]} label={topic.name} />)}
+            article.articleTopics.map((topic) => (
+              <Chip key={topic["@id"]} label={topic.name} sx={{ mx: 0.5, my: 0.5 }} />
+            ))}
         </Stack>
         <Stack>
-          <Typography variant="h5">Analyses Pipeline</Typography>
+          <Typography variant="h5">{t("Analyses Pipeline")}</Typography>
         </Stack>
         <AnalysisPipeline articleId={article["@id"]} />
         <Stack>
           <Stack direction="row" alignItems={"center"} justifyContent={"space-between"}>
-            <Typography variant="h5">Abstract</Typography>
+            <Typography variant="h5">{t("Abstract")}</Typography>
             {article.sentimentOfAbstract && (
               <SentimentChip sentiment={article.sentimentOfAbstract} />
             )}
@@ -78,7 +81,7 @@ export default function Page() {
         </Stack>
         <Stack>
           <Stack direction="row" justifyContent={"space-between"}>
-            <Typography variant="h5">Text</Typography>
+            <Typography variant="h5">{t("Text")}</Typography>
             <Stack direction="row" gap={2}>
               {article.sentimentOfText && <SentimentChip sentiment={article.sentimentOfText} />}
               <IconButton onClick={() => setShowFulltext(!showFulltext)}>
@@ -91,10 +94,10 @@ export default function Page() {
           </Collapse>
         </Stack>
         <Stack>
-          <Typography variant="h5">Autoren</Typography>
+          <Typography variant="h5">{t("Authors")}</Typography>
           {!article.authors ||
             (article.authors.length === 0 && (
-              <Alert severity="info">Keine Autoren zugeordnet.</Alert>
+              <Alert severity="info">{t("No authors assigned.")}</Alert>
             ))}
           <Stack direction="row" gap={2}>
             {article.authors &&
@@ -105,10 +108,10 @@ export default function Page() {
         </Stack>
         <Divider />
         <Stack>
-          <Typography variant="h5">Erwähnte Personen</Typography>
+          <Typography variant="h5">{t("Mentioned persons")}</Typography>
           {!article.mentionedPersons ||
             (article.mentionedPersons.length === 0 && (
-              <Alert severity="info">Keine Personen zugeordnet.</Alert>
+              <Alert severity="info">{t("No people assinged.")}</Alert>
             ))}
           <Stack direction="row" gap={2}>
             {article.mentionedPersons &&
@@ -122,47 +125,47 @@ export default function Page() {
         <Divider />
         {article.complexities && article.complexities.length > 0 && (
           <Stack>
-            <Typography variant="h5">Text complexity</Typography>
+            <Typography variant="h5">{t("Text complexity")}</Typography>
             <Table>
               <TableBody>
                 <TableRow>
-                  <TableCell>Wiener-Sachtextindex</TableCell>
+                  <TableCell>{t("Wiener-Sachtextindex")}</TableCell>
                   <TableCell>
                     {article.complexities[0] ? article.complexities[0].wienerSachtextIndex : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Lesezeit in Minuten</TableCell>
+                  <TableCell>{t("Reading time in minutes")}</TableCell>
                   <TableCell>
                     {article.complexities[0] ? article.complexities[0].readingTimeInMinutes : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Satzanzahl</TableCell>
+                  <TableCell>{t("Sentence count")}</TableCell>
                   <TableCell>
                     {article.complexities[0] ? article.complexities[0].totalSentences : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Wortanzahl</TableCell>
+                  <TableCell>{t("Word count")}</TableCell>
                   <TableCell>
                     {article.complexities[0] ? article.complexities[0].totalWords : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Zeichenanzahl</TableCell>
+                  <TableCell>{t("Character count")}</TableCell>
                   <TableCell>
                     {article.complexities[0] ? article.complexities[0].totalChars : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>⌀ Wörter pro Satz</TableCell>
+                  <TableCell>{t("⌀ Words per sentence")}</TableCell>
                   <TableCell>
                     {article.complexities[0] ? article.complexities[0].meanWordsPerSentence : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>⌀ Zeichen pro Wort</TableCell>
+                  <TableCell>{t("⌀ Characters per word")}</TableCell>
                   <TableCell>
                     {article.complexities[0] ? article.complexities[0].meanCharsPerWord : "-"}
                   </TableCell>
