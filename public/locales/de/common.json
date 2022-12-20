@@ -3,13 +3,20 @@
     "entities": {
       "articles": "Artikel",
       "institutions": "Institutionen",
-      "persons": "Personen"
+      "persons": "Personen",
+      "topics": "Themen",
+      "authors": "Autoren"
     },
     "settings": "Einstellungen",
     "logout": "Logout",
     "dashboard": "Dashboard",
     "textComplexity": "Textkomplexität",
-    "topics":"Themen",
+    "topics": "Themen",
+    "api-key": "Api key",
+    "users": "Nutzer",
+    "analysis-microservices": "Microservices",
+    "webhooks": "Webhooks",
+    "article-sources": "Artikelquellen",
     "group": {
       "default": "Dashboards",
       "entities": "Entitäten",

@@ -46,6 +46,7 @@
     "react-date-range": "^1.4.0",
     "react-dom": "18.2.0",
     "react-highlight": "^0.14.0",
+    "react-markdown": "^8.0.4",
     "react-password-strength-bar": "^0.4.1",
     "reaviz": "13.1.14",
     "recharts": "^2.1.15",
@@ -57,6 +58,7 @@
     "@next/eslint-plugin-next": "^13.0.2",
     "@types/d3-array": "^3.0.3",
     "@types/node": "18.7.18",
+    "@types/prettier": "^2.7.2",
     "@types/react": "18.0.20",
     "@types/react-dom": "18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
@@ -69,7 +71,7 @@
     "eslint-plugin-react": "^7.31.10",
     "husky": "^8.0.2",
     "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1",
+    "prettier": "2.8.1",
     "typescript": "*"
   }
 }

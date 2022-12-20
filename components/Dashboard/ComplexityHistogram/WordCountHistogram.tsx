@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { bin as d3Bin } from "d3-array";
+import { useTranslation } from "next-i18next";
 import {
   TooltipProps,
   BarChart,
@@ -19,6 +20,7 @@ interface WordCountHistogramProps {
 }
 
 export default function WordCountHistogram(props: WordCountHistogramProps) {
+  const { t } = useTranslation();
   const { data, isLoading } = useQuery(["articles-body-word-count"], () => {
     const filterEncoder = new ApipFilterEncoder();
     filterEncoder.addSingleValueFilter("part", "body").addArrayFilter("properties", ["totalWords"]);
@@ -45,9 +47,9 @@ export default function WordCountHistogram(props: WordCountHistogramProps) {
           className="custom-tooltip"
           style={{ background: "rgba(255, 255, 255, 0.7)", padding: 1 }}
         >
-          <span className="label">{`${payload[0].value} Artikel`}</span>
+          <span className="label">{t(`{{value}} articles`, { value: payload[0].value })}</span>
           <br />
-          <span className="label">{`mit einer Wortanzahl zwischen  ${payload[0].payload.from} und ${payload[0].payload.to}`}</span>
+          <span className="label">{t(`with a wordcount between {{from}} and {{to}}`, { from: payload[0].payload.from, to: payload[0].payload.to })}</span>
         </div>
       );
     }
@@ -87,7 +89,7 @@ export default function WordCountHistogram(props: WordCountHistogramProps) {
       <BarChart data={giveHistogramData(data)} margin={{ bottom: 50 }}>
         <XAxis
           label={{
-            value: "Wortanzahl in Hundert",
+            value: t("Wordcount in hundret"),
             position: "insideBottom",
             offset: -45,
           }}
@@ -95,7 +97,7 @@ export default function WordCountHistogram(props: WordCountHistogramProps) {
         />
         <YAxis
           label={{
-            value: "Anzahl Artikel",
+            value: t("Total articles"),
             angle: -90,
             offset: 20,
             position: "insideLeft",
@@ -104,7 +106,7 @@ export default function WordCountHistogram(props: WordCountHistogramProps) {
         <Tooltip content={<CustomTooltip />} />
         <Bar
           dataKey="count"
-          name="Anzahl an Artikeln"
+          name={t("Total articles")}
           fill="#8884d8"
           style={{ cursor: "pointer" }}
           onClick={(e) => {

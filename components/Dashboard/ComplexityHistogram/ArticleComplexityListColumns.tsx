@@ -1,4 +1,6 @@
-import { GridColDef, GridValueFormatterParams } from "@mui/x-data-grid";
+import { Article } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
+import { GridColDef, GridRenderCellParams, GridValueFormatterParams } from "@mui/x-data-grid";
 import {
   ArticleComplexityInterface,
   ArticleComplexityNumberTypes,
@@ -9,14 +11,26 @@ export interface NumberGridColDef extends Omit<GridColDef, "field"> {
 }
 
 export interface RestrictedGridColDef extends Omit<GridColDef, "field"> {
-  field: keyof ArticleComplexityInterface;
+  field: keyof ArticleComplexityInterface | "details";
 }
 
 export const ArticleComplexityListColumns: RestrictedGridColDef[] = [
   {
+    field: "details",
+    headerName: "",
+    sortable: false,
+    type: "actions",
+    width: 50,
+    renderCell: (params: GridRenderCellParams<string>) => (
+      <IconButton>
+        <Article />
+      </IconButton>
+    ),
+  },
+  {
     field: "article",
-    headerName: "Titel",
-    width: 150,
+    headerName: "title",
+    width: 200,
     type: "string",
     editable: false,
     valueGetter: (params) => {
@@ -26,48 +40,48 @@ export const ArticleComplexityListColumns: RestrictedGridColDef[] = [
   {
     field: "wienerSachtextIndex",
     headerName: "Wiener-Sachtextindex",
-    width: 150,
+    width: 160,
     type: "number",
     editable: false,
   },
   {
     field: "readingTimeInMinutes",
-    headerName: "Lesezeit in Minuten",
+    headerName: "Reading time in minutes",
     width: 150,
     type: "number",
     editable: false,
   },
   {
     field: "totalSentences",
-    headerName: "Satzanzahl",
-    width: 150,
+    headerName: "Total Sentence",
+    width: 125,
     type: "number",
     editable: false,
   },
   {
     field: "totalWords",
-    headerName: "Wortanzahl",
-    width: 150,
+    headerName: "Total words",
+    width: 125,
     type: "number",
     editable: false,
   },
   {
     field: "totalChars",
-    headerName: "Zeichenanzahl",
-    width: 150,
+    headerName: "total characters",
+    width: 125,
     type: "number",
     editable: false,
   },
   {
     field: "meanWordsPerSentence",
-    headerName: "⌀ Wörter pro Satz",
+    headerName: "⌀ words per sentence",
     width: 150,
     type: "number",
     editable: false,
   },
   {
     field: "meanCharsPerWord",
-    headerName: "⌀ Zeichen pro Wort",
+    headerName: "⌀ characters per word",
     width: 150,
     type: "number",
     editable: false,

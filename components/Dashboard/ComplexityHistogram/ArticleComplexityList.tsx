@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import { useRouter } from "next/router";
 import { ArticleComplexityNumberTypes } from "../../../interfaces/ArticleComplexityInterface";
 import DataGridTable, { DataGridTablePropsInterface } from "../../DataGridTable";
 import { ArticleComplexityListColumnsOfTypeNumber } from "./ArticleComplexityListColumns";
@@ -11,6 +12,7 @@ interface ArticleComplexityListPropsInterface extends DataGridTablePropsInterfac
 }
 
 export default function ArticleComplexityList(props: ArticleComplexityListPropsInterface) {
+  const router = useRouter();
   const fieldData = props.rows
     ? ArticleComplexityListColumnsOfTypeNumber.map((column) => {
         return {
@@ -40,6 +42,10 @@ export default function ArticleComplexityList(props: ArticleComplexityListPropsI
           onPageSizeChange={props.onPageSizeChange}
           handleSorting={props.handleSorting}
           columns={props.columns}
+          onCellClick={(e) => {
+            console.log("click", e);
+            e.field === "details" && router.push(`/entities${e.row.article["@id"]}`);
+          }}
         />
       </Box>
     </>

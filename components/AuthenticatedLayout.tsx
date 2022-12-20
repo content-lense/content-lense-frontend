@@ -17,12 +17,14 @@ import { PwaContext } from "../helpers/PwaContext";
 import LoadingScreen from "./LoadingScreen";
 import Image from "next/image";
 import { useTheme } from "@mui/material/styles";
+import { useTranslation } from "next-i18next";
 
 interface AuthenticatedLayoutProps {
   children: JSX.Element;
 }
 
 const AuthenticatedLayout: FC<AuthenticatedLayoutProps> = (props) => {
+  const { t } = useTranslation();
   const theme = useTheme();
 
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -73,7 +75,7 @@ const AuthenticatedLayout: FC<AuthenticatedLayoutProps> = (props) => {
         <Toolbar>
           <IconButton
             color="inherit"
-            aria-label="open drawer"
+            aria-label={t("open drawer")}
             edge="start"
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: "none" } }}

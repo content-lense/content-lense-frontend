@@ -1,4 +1,5 @@
 import { Box, FormControl, Grid, InputLabel, MenuItem, Select, Slider, Stack } from "@mui/material";
+import { useTranslation } from "next-i18next";
 import { useEffect, useState } from "react";
 
 export interface RangeFilterFieldProps {
@@ -33,6 +34,7 @@ function FilterItems(items: RangeFilterFieldProps[]) {
 }
 
 export default function RangeFilter(props: RangeFilterProps) {
+  const { t } = useTranslation();
   const [selectField, setSelectField] = useState("");
   const [sliderValue, setSliderValue] = useState([0, 100]);
   const [maxSliderValue, setMaxSliderValue] = useState(100);
@@ -71,11 +73,11 @@ export default function RangeFilter(props: RangeFilterProps) {
     <Grid container spacing={4}>
       <Grid item xs={12} md={6}>
         <FormControl fullWidth>
-          <InputLabel id="filterSelectLabel">Bitte Filter wählen</InputLabel>
+          <InputLabel id="filterSelectLabel">{t("Please choose filter")}</InputLabel>
           <Select
             id="filterSelect"
             labelId="filterSelectLabel"
-            label="Bitte Filter wählen"
+            label={t("Please choose filter")}
             value={selectField}
             onChange={(e) => {
               setSelectField(e.target.value);

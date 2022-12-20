@@ -5,12 +5,14 @@ import { bin as d3Bin } from "d3-array";
 import { BarChart, XAxis, YAxis, Tooltip, Bar, ResponsiveContainer, TooltipProps } from "recharts";
 import { Props as XAxisProps } from "recharts/types/cartesian/XAxis";
 import { PureComponent } from "react";
+import { useTranslation } from "next-i18next";
 
 interface ReadingTimeHistogramProps {
   onClick: (rangeLowerBoundary: number, rangeUpperBoundary: number) => void;
 }
 
 export default function ReadingTimeHistogram(props: ReadingTimeHistogramProps) {
+  const { t } = useTranslation();
   const { data, isLoading } = useQuery(["articles-reading-time-in-minutes"], () =>
     GenericGetItems<ArticleComplexityInterface>(
       "/article_complexities?part=body&properties[]=readingTimeInMinutes"
@@ -39,9 +41,9 @@ export default function ReadingTimeHistogram(props: ReadingTimeHistogramProps) {
           className="custom-tooltip"
           style={{ background: "rgba(255, 255, 255, 0.7)", padding: 1 }}
         >
-          <span className="label">{`${payload[0].value} Artikel`}</span>
+          <span className="label">{t("{{value}} articles", { value: payload[0].value })}</span>
           <br />
-          <span className="label">{`mit einer Lesezeit zwischen  ${payload[0].payload.from} und ${payload[0].payload.to} Minuten`}</span>
+          <span className="label">{t("with a reading time between {{from}} and {{to}} minutes", { from: payload[0].payload.from, to: payload[0].payload.to })}</span>
         </div>
       );
     }
@@ -79,7 +81,7 @@ export default function ReadingTimeHistogram(props: ReadingTimeHistogramProps) {
       <BarChart data={giveHistogramData(data)} margin={{ bottom: 50 }}>
         <XAxis
           label={{
-            value: "Benötigte Lesezeit in Minuten",
+            value: t("Reading time in minutes"),
             position: "insideBottom",
             offset: -45,
           }}
@@ -87,7 +89,7 @@ export default function ReadingTimeHistogram(props: ReadingTimeHistogramProps) {
         />
         <YAxis
           label={{
-            value: "Anzahl Artikel",
+            value: t("Article count"),
             angle: -90,
             offset: 20,
             position: "insideLeft",
@@ -96,7 +98,7 @@ export default function ReadingTimeHistogram(props: ReadingTimeHistogramProps) {
         <Tooltip content={<CustomTooltip />} />
         <Bar
           dataKey={"count"}
-          name="Anzahl an Artikeln"
+          name={t("Article count")}
           fill="#8884d8"
           style={{ cursor: "pointer" }}
           onClick={(e) => {

@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "next-i18next";
 import { TooltipProps, BarChart, XAxis, YAxis, Tooltip, Bar, ResponsiveContainer } from "recharts";
 import { GenericGetItems } from "../../../data/ReactQueries";
 import { ApipFilterEncoder } from "../../../helpers/ApiPlatform/apip-filter-encoder";
@@ -9,6 +10,7 @@ interface WienerSachtextIndexHistogramProps {
 }
 
 export default function WienerSachtextIndexHistogram(props: WienerSachtextIndexHistogramProps) {
+  const { t } = useTranslation();
   const { data, isLoading } = useQuery(["articles-body-wiener-sachtext-index"], () => {
     const filterEncoder = new ApipFilterEncoder();
     filterEncoder
@@ -41,11 +43,9 @@ export default function WienerSachtextIndexHistogram(props: WienerSachtextIndexH
           className="custom-tooltip"
           style={{ background: "rgba(255, 255, 255, 0.7)", padding: 1 }}
         >
-          <span className="label">{`${payload[0].value} Artikel`}</span>
+          <span className="label">{t(`{{label}} articles`, { label: payload[0].value })}</span>
           <br />
-          <span className="label">{`mit Wiener-Sachtextindex von ${
-            label < 4 ? "<4" : label
-          }`}</span>
+          <span className="label">{t(`with Wiener-Sachtextindex of {{value}}`, { value: label < 4 ? "<4" : label })}</span>
         </div>
       );
     }
@@ -71,7 +71,7 @@ export default function WienerSachtextIndexHistogram(props: WienerSachtextIndexH
         />
         <YAxis
           label={{
-            value: "Anzahl Artikel",
+            value: t("Total articles"),
             angle: -90,
             offset: 20,
             position: "insideLeft",
@@ -80,7 +80,7 @@ export default function WienerSachtextIndexHistogram(props: WienerSachtextIndexH
         <Tooltip content={<CustomTooltip />} />
         <Bar
           dataKey="count"
-          name="Anzahl an Artikeln"
+          name={t("Total articles")}
           fill="#8884d8"
           style={{ cursor: "pointer" }}
           onClick={(e) => {
@@ -88,8 +88,8 @@ export default function WienerSachtextIndexHistogram(props: WienerSachtextIndexH
               props.onClick(
                 e.wienerIndex < 4
                   ? data.reduce((prev, curr) => {
-                      return prev.wienerSachtextIndex < curr.wienerSachtextIndex ? prev : curr;
-                    }).wienerSachtextIndex
+                    return prev.wienerSachtextIndex < curr.wienerSachtextIndex ? prev : curr;
+                  }).wienerSachtextIndex
                   : e.wienerIndex - 0.5,
                 e.wienerIndex + 0.49
               );

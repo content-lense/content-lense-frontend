@@ -1,3 +1,4 @@
+import { useTranslation } from "next-i18next";
 import React from "react";
 import {
   LineChart,
@@ -16,6 +17,7 @@ interface AddedArticlesGraphPropsInterface {
   articles: ArticleInterface[];
 }
 export default function AddedArticlesGraph(props: AddedArticlesGraphPropsInterface) {
+  const { t } = useTranslation();
   let initialGroups: Record<string, ArticleInterface[]> = {};
   const groupedByDateArticles = props.articles.reduce((groups, article) => {
     if (!article.createdAt) return groups;
@@ -50,11 +52,9 @@ export default function AddedArticlesGraph(props: AddedArticlesGraphPropsInterfa
           className="custom-tooltip"
           style={{ background: "rgba(255, 255, 255, 0.7)", padding: 1 }}
         >
-          <span className="label">{`Am ${new Date(label).toLocaleDateString("de-DE")}`}</span>
+          <span className="label">{t("On {{value}}", { value: new Date(label).toLocaleDateString("de-DE") })}</span>
           <br />
-          <span className="label">{`${payload[0].value > 1 ? "wurden " : "wurde "}${
-            payload[0].value
-          } Artikel hinzugefügt`}</span>
+          <span className="label">{t("{{value}} articles added", { value: payload[0].value })}</span>
         </div>
       );
     }
@@ -82,7 +82,7 @@ export default function AddedArticlesGraph(props: AddedArticlesGraphPropsInterfa
           <Line
             type="monotone"
             dataKey="articles.length"
-            name="Hinzugefügte Artikel"
+            name={t("Added articles")}
             stroke="#8884d8"
             activeDot={{ r: 8 }}
           />

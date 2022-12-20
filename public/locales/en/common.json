@@ -8,6 +8,11 @@
     "settings": "Settings",
     "logout": "Logout",
     "dashboard": "Dashboard",
+    "api-key": "Api key",
+    "users": "Users",
+    "analysis-microservices": "Microservices",
+    "webhooks": "Webhooks",
+    "article-sources": "Article sources",
     "group": {
       "default": "Home",
       "entities": "Entities",
